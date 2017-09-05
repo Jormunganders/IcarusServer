@@ -8,6 +8,9 @@ class LoginController extends BaseController
 
     public function login()
     {
+        if(!empty(session('admin_user')) && session('admin_user') == 'is_admin'){
+            return retErrorMessage('已登录，请不要重复登录');
+        }
         if (IS_POST) {
             $model = M('User');
             $post = I('post.');
@@ -62,7 +65,9 @@ class LoginController extends BaseController
                     $inert['last_login_ip'] = get_client_ip();
                     $inert['login_times'] = $data['login_times'] + 1;
                     $model->where($where)->save($inert);
+                    session(array('name'=>'user', 'expire' => 60*60*3));
                     session('user', "is_login");
+                    session('username', $post['username']);
 
                     $ret = array(
                         'status' => 0,

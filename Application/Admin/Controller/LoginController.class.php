@@ -3,6 +3,9 @@ namespace Admin\Controller;
 use Think\Controller;
 class LoginController extends Controller{
     public function login(){
+        if(!empty(session('admin_user')) && session('admin_user') == 'is_admin'){
+            return retErrorMessage('已登录，请不要重复登录');
+        }
         if(IS_POST){
             $post = I('post.');
             $model = D('user');
@@ -22,7 +25,9 @@ class LoginController extends Controller{
                             $ret = retErrorMessage('登录失败');
                             $this->ajaxReturn($ret, 'JSON');
                         }
-                        session('user', 'is_admin');
+                        session(array('name'=>'admin_user','expire'=>60*60*3));
+                        session('admin_user', 'is_admin');
+                        session('admin_username', $post['username']);
                         $ret = retMessage('登录成功');
                     }else{
                         $ret = retErrorMessage('密码或帐号错误');
