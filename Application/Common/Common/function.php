@@ -32,16 +32,23 @@ function check_verify($code){
     return $verify->check($code);
 }
 
-function retMessage($status, $message = '', $data = array()){
+function retMessage($message = '', $data = array()){
     if(empty($data)){
         return array(
-            'status' => $status,
+            'status' => 'ok',
             'message' => $message
         );
     }
     return array(
-        'status' => $status,
+        'status' => 'ok',
         'data' => $data,
+        'message' => $message
+    );
+}
+
+function retErrorMessage($message){
+    return array(
+        'status' => 'error',
         'message' => $message
     );
 }

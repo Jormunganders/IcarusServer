@@ -178,10 +178,10 @@ class Verify {
         header('Cache-Control: private, max-age=0, no-store, no-cache, must-revalidate');
         header('Cache-Control: post-check=0, pre-check=0', false);		
         header('Pragma: no-cache');
-        header("content-type: image/png");
+        header("content-type: image/jpeg");
 
         // 输出图像
-        imagepng($this->_image);
+        imagejpeg($this->_image);
         imagedestroy($this->_image);
     }
 

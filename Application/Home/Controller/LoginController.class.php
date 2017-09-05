@@ -1,8 +1,6 @@
 <?php
 
 namespace Home\Controller;
-
-use \Common\Controller;
 use Common\Controller\BaseController;
 
 class LoginController extends BaseController
@@ -13,7 +11,8 @@ class LoginController extends BaseController
         if (IS_POST) {
             $model = M('User');
             $post = I('post.');
-            $data = $model->where('nick=' . $post['nick'])->find();
+            $where['user_nick'] = $post['nick'];
+            $data = $model->where($where)->find();
 
             if(empty($post['nick'])){
                 $ret = array(
@@ -62,6 +61,7 @@ class LoginController extends BaseController
                     $inert['last_login_time'] = time();
                     $inert['last_login_ip'] = getIp();
                     $inert['login_times'] = $data['login_times'] + 1;
+                    $model->where($where)->save($inert);
                     session('user', "is_login");
 
                     $ret = array(

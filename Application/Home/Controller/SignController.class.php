@@ -3,24 +3,25 @@ namespace Home\Controller;
 use \Common\Controller\BaseController;
 
 class SignController extends BaseController{
-    public function addUser()
+    public function sign()
     {
         if (IS_POST) {
             $model = M('User');
             $post = I('post.');
+            $where['user_nick'] = $post['nick'];
             if (empty($post['nick'])) {
-                $ret = retMessage(4004, '昵称不能为空');
+                $ret = retErrorMessage('昵称不能为空');
                 $this->ajaxReturn($ret, 'JSON');
             }elseif (empty($post['passwd'])) {
-                $ret = retMessage(4004, '密码为空');
+                $ret = retErrorMessage('密码为空');
                 $this->ajaxReturn($ret, 'JSON');
             }elseif (empty($post['email'])) {
-                $ret = retMessage(4004, '邮箱不能为空');
+                $ret = retErrorMessage('邮箱不能为空');
                 $this->ajaxReturn($ret, 'JSON');
             }
-            $user = $model->where('user_nick=' . $post['nick'])->find();
+            $user = $model->where($where)->find();
             if (!empty($user)) {
-                $ret = retMessage(4004, '帐号已被注册');
+                $ret = retErrorMessage('帐号已被注册');
                 $this->ajaxReturn($ret, 'JSON');
             }
             $data['user_nick'] = $post['nick'];
@@ -31,13 +32,17 @@ class SignController extends BaseController{
             $data['passwd'] = md5($post['passwd'] . $user['salt']);
 
             if ($model->add($data) !== false) {
-                $ret = retMessage(0, '注册成功');
+                $ret = retMessage('注册成功');
             } else {
-                $ret = retMessage(4004, '注册失败');
+                $ret = retErrorMessage('注册失败');
             }
         }else{
-            $ret = retMessage(4004, '请通过正常渠道注册');
+            $ret = retErrorMessage('请通过正常渠道注册');
         }
         $this->ajaxReturn($ret, 'JSON');
+    }
+
+    public function showVerify(){
+        show_verify();
     }
 }

@@ -5,7 +5,7 @@ USE icarus;
 CREATE TABLE `icarus_user`(
   uid INT (10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '主键',
   user_nick VARCHAR (30) NOT NULL DEFAULT '' COMMENT '用户昵称',
-  passwd VARCHAR (30) NOT NULL DEFAULT '' COMMENT '密码',
+  passwd VARCHAR (255) NOT NULL DEFAULT '' COMMENT '密码',
   head_img VARCHAR (255) NOT NULL DEFAULT '' COMMENT '用户头像地址',
   create_time INT (10) unsigned NOT NULL DEFAULT '0' COMMENT '用户注册时间',
   last_login_time INT (10) unsigned NOT NULL DEFAULT '0' COMMENT '用户最后一次登录时间',
