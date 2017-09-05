@@ -21,8 +21,8 @@ class SignController extends Controller{
                 $this->ajaxReturn($ret, 'JSON');
             }
             $user = $model->where($where)->find();
-            $where['email'] = $post['email'];
-            $email = $model->where($where)->find();
+            $wh['email'] = $post['email'];
+            $email = $model->where($wh)->find();
             if(!empty($email)){
                 $ret = retErrorMessage('邮箱已被注册');
                 $this->ajaxReturn($ret, 'JSON');

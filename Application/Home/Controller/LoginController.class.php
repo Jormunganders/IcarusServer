@@ -17,7 +17,7 @@ class LoginController extends BaseController
             if(empty($post['username'])){
                 $ret = array(
                     'status' => 4004,
-                    'message' => '昵称不能为空'
+                    'message' => '用户id不能为空'
                 );
                 $this->ajaxReturn($ret, 'JSON');
             }

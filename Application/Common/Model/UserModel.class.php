@@ -113,7 +113,6 @@ class UserModel extends Model
     }
 
     public function sealUser($post){
-        $where['username'] = $post['username'];
         if(empty($post['username'])){
             $ret = retErrorMessage('请填写昵称');
             return $ret;
@@ -123,10 +122,11 @@ class UserModel extends Model
         if(empty($result)){
             return retErrorMessage('没有此用户');
         }
-        if($this->where($where)->save() != false){
+        $update['is_seal'] = 1;
+        if($this->where($where)->save($update) !== false){
             return retMessage('封号成功');
         }else{
-            return retErrorMessage('封号失败，请重试');
+            return retMessage('封号失败，请重试', array($this->getDbError()));
         }
     }
 }
