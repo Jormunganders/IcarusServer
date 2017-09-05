@@ -8,6 +8,7 @@
 <form action="<?php echo U('Admin/Login/login');?>" method="POST">
     <input type="text" name="nick"/>
     <input type="text" name="passwd"/>
+    <?php echo U('Admin/Login/login');?>
     <img src="<?php echo U('Admin/Login/showVerify');?>" title="点击更换"  onclick="this.src+='/'+Math.random();"/>
     <input type="text" name="verify">
     <input type="submit" value="提交"/>

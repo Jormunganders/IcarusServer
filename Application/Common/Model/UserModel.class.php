@@ -6,21 +6,24 @@ use Think\Model;
 
 class UserModel extends Model
 {
-    protected $_validate = array(
+    /*protected $_validate = array(
         array('repasswd', 'passwd', '密码确认不正确', 0, 'confirm'),
-    );
+    );*/
 
     public function editPasswd($data)
     {
-        $where['user_nick'] = $data['nick'];
+        $where['username'] = $data['username'];
+        if(empty($this->where($where)->find())){
+            return retErrorMessage('没有此用户');
+        }
         $ret = $this->where($where)->find();
         if ($ret['passwd'] != md5($data['old_passwd'] . $ret['salt'])) {
             return retErrorMessage('原密码不正确');
         }
 
-        $update['passwd'] = $data['old_passwd'];
+        $update['passwd'] = md5($data['passwd'] . $ret['salt']);
         if ($this->create()) {
-            $this->where($where)->save();
+            $this->where($where)->save($update);
             return retMessage('修改密码成功');
         }
     }
@@ -33,25 +36,28 @@ class UserModel extends Model
 
     public function getOneUser($nick)
     {
-        $where['user_nick'] = $nick;
+        $where['username'] = $nick['username'];
+        if(empty($this->where($where)->find())){
+            return retErrorMessage('没有此用户');
+        }
         return $this->where($where)->find();
     }
 
-    public function getUserList($page, $row)
+    public function getUserList($page = '1', $row = '20')
     {
         return $this->page($page . ',' . $row)->select();
     }
 
     public function addModerator($post)
     {
-        $where['user_nick'] = $post['nick'];
-        if (empty($post['admin_grade'])) {
-            return retErrorMessage('等级不能为空');
-        }
-        if (empty($post['nick'])) {
+        $where['username'] = $post['username'];
+        if (empty($post['username'])) {
             return retErrorMessage('昵称不能为空');
         }
-        $data['is_admin'] = $post['admin_grade'];
+        if(empty($this->where($where)->find())){
+            return retErrorMessage('没有此用户');
+        }
+        $data['is_admin'] = 1;
         if ($this->where($where)->save($data) !== false) {
             $ret = retMessage('添加成功');
         } else {
@@ -62,41 +68,65 @@ class UserModel extends Model
 
     public function editUserData($post)
     {
-        $where['user_nick'] = $post['nick'];
-        if (empty($post['passwd'])) {
-            return retErrorMessage('passwd字段为空');
-        }
+        $where['username'] = $post['username'];
         if (empty($post['email'])) {
             return retErrorMessage('email字段为空');
         }
-        if (empty($post['nick'])) {
-            return retErrorMessage('nick字段为空');
+        if (empty($post['username'])) {
+            return retErrorMessage('username字段为空');
         }
-        empty($post['head_img']) ? $data['head_img'] = '' : $data['head_img'] = $post['head_img'];
+        if(empty($this->where($where)->find())){
+            return retErrorMessage('没有此用户');
+        }
+        $wh['email'] = $post['email'];
+        if(!empty($this->where($wh)->find())){
+            $ret = retErrorMessage('邮箱已被注册');
+            return $ret;
+        }
+        empty($post['head_img']) ? $data['head_img'] = '' :$data['head_img'] = $post['head_img'];
         $data['email'] = $post['email'];
-        $data['passwd'] = $post['passwd'];
-        if ($this->where($where)->save($data) !== false) {
+        if ($this->where($where)->save($data) != false) {
             $ret = retMessage('修改成功');
         } else {
-            $ret = retErrorMessage('修改失败');
+            $ret = retMessage('修改失败', array('data' => $this->getDbError()));
         }
         return $ret;
     }
 
     public function addAdministrator($post)
     {
-        $where['user_nick'] = $post['nick'];
-        if (empty($post['admin_grade'])) {
-            $ret = retErrorMessage('请填写等级');
-        } elseif (empty($post['nick'])) {
+        if (empty($post['username'])) {
             $ret = retErrorMessage('请填写昵称');
+            return $ret;
         }
-        $data['is_admin'] = $post['admin_grade'];
+        $where['username'] = $post['username'];
+        if(empty($this->where($where)->find())){
+            return retErrorMessage('没有此用户');
+        }
+        $data['is_admin'] = 2;
         if ($this->where($where)->save($data) !== false) {
             $ret = retMessage('添加成功');
         } else {
             $ret = retErrorMessage('添加失败');
         }
         return $ret;
+    }
+
+    public function sealUser($post){
+        $where['username'] = $post['username'];
+        if(empty($post['username'])){
+            $ret = retErrorMessage('请填写昵称');
+            return $ret;
+        }
+        $where['username'] = $post['username'];
+        $result = $this->where($where)->find();
+        if(empty($result)){
+            return retErrorMessage('没有此用户');
+        }
+        if($this->where($where)->save() != false){
+            return retMessage('封号成功');
+        }else{
+            return retErrorMessage('封号失败，请重试');
+        }
     }
 }

@@ -1,20 +1,26 @@
 <?php
+
 namespace Admin\Controller;
+
 use Think\Controller;
 
-class UserController extends Controller{
-    public function editPasswd(){
+class UserController extends Controller
+{
+    public function editPasswd()
+    {
         $post = I("post.");
         $model = D('User');
         $ret = $model->editPasswd($post);
         $this->ajaxReturn($ret, 'JSON');
     }
 
-    public function forgetPasswd(){
+    public function forgetPasswd()
+    {
 
     }
 
-    public function getOneUser(){
+    public function getOneUser()
+    {
         $post = I("post.");
         $model = D('User');
         $ret = $model->getOneUser($post);
@@ -22,31 +28,43 @@ class UserController extends Controller{
         $this->ajaxReturn($ret, "JSON");
     }
 
-    public function getUserList(){
+    public function getUserList()
+    {
         $model = D('User');
-        $ret = $model->getUserlist();
+        $data = I('get.');
+        $ret = $model->getUserlist($data['page'], $data['row']);
         $ret = retMessage('', array($ret));
-        $this->ajaxReturn($ret, "JSON");
+        $this->ajaxReturn($ret, 'JSON');
     }
 
-    public function addModerator(){
+    public function addModerator()
+    {
         $post = I("post.");
         $model = D('User');
         $ret = $model->addModerator($post);
         $this->ajaxReturn($ret, 'JSON');
     }
 
-    public function editUserData(){
+    public function editUserData()
+    {
         $post = I("post.");
         $model = D("User");
         $ret = $model->editUserData($post);
         $this->ajaxReturn($ret, 'JSON');
     }
 
-    public function addAdministrator(){
+    public function addAdministrator()
+    {
         $post = I("post.");
         $model = D("User");
         $ret = $model->addAdministrator($post);
+        $this->ajaxReturn($ret, 'JSON');
+    }
+
+    public function sealUser(){
+        $post = I("post.");
+        $model = D("User");
+        $ret = $model->sealUser($post);
         $this->ajaxReturn($ret, 'JSON');
     }
 }

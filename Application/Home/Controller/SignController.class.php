@@ -1,15 +1,16 @@
 <?php
 namespace Home\Controller;
 use \Common\Controller\BaseController;
+use Think\Controller;
 
-class SignController extends BaseController{
+class SignController extends Controller{
     public function sign()
     {
         if (IS_POST) {
             $model = M('User');
             $post = I('post.');
-            $where['user_nick'] = $post['nick'];
-            if (empty($post['nick'])) {
+            $where['username'] = $post['username'];
+            if (empty($post['username'])) {
                 $ret = retErrorMessage('昵称不能为空');
                 $this->ajaxReturn($ret, 'JSON');
             }elseif (empty($post['passwd'])) {
@@ -20,16 +21,24 @@ class SignController extends BaseController{
                 $this->ajaxReturn($ret, 'JSON');
             }
             $user = $model->where($where)->find();
+            $where['email'] = $post['email'];
+            $email = $model->where($where)->find();
+            if(!empty($email)){
+                $ret = retErrorMessage('邮箱已被注册');
+                $this->ajaxReturn($ret, 'JSON');
+                exit;
+            }
             if (!empty($user)) {
                 $ret = retErrorMessage('帐号已被注册');
                 $this->ajaxReturn($ret, 'JSON');
+                exit;
             }
-            $data['user_nick'] = $post['nick'];
+            $data['username'] = $post['username'];
             $data['create_time'] = time();
             $data['email'] = $post['email'];
             $data['is_admin'] = 0;
             $data['salt'] = md5(time() . mt_rand(1, 1000));
-            $data['passwd'] = md5($post['passwd'] . $user['salt']);
+            $data['passwd'] = md5($post['passwd'] . $data['salt']);
 
             if ($model->add($data) !== false) {
                 $ret = retMessage('注册成功');

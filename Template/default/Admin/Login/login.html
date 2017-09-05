@@ -8,6 +8,7 @@
 <form action="{:U('Admin/Login/login')}" method="POST">
     <input type="text" name="nick"/>
     <input type="text" name="passwd"/>
+    {:U('Admin/Login/login')}
     <img src="{:U('Admin/Login/showVerify')}" title="点击更换"  onclick="this.src+='/'+Math.random();"/>
     <input type="text" name="verify">
     <input type="submit" value="提交"/>

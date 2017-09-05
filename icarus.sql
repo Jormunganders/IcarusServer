@@ -4,6 +4,7 @@ USE icarus;
 
 CREATE TABLE `icarus_user`(
   uid INT (10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '主键',
+  username VARCHAR (20) NOT NULL DEFAULT '' COMMENT '用户id',
   user_nick VARCHAR (30) NOT NULL DEFAULT '' COMMENT '用户昵称',
   passwd VARCHAR (255) NOT NULL DEFAULT '' COMMENT '密码',
   head_img VARCHAR (255) NOT NULL DEFAULT '' COMMENT '用户头像地址',
@@ -78,6 +79,7 @@ ALTER TABLE icarus_posts_image ADD INDEX index_posts_id(posts_id);
 ALTER TABLE icarus_reply_image ADD INDEX index_rid(rid);
 ALTER TABLE icarus_posts ADD FULLTEXT index_keywords(keywords);
 ALTER TABLE icarus_posts ADD FULLTEXT index_title(title);
+ALTER TABLE icarus_user ADD UNIQUE index_username(username);
 
 
 

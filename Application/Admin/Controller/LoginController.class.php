@@ -7,7 +7,7 @@ class LoginController extends Controller{
             $post = I('post.');
             $model = D('user');
             if(check_verify($post['verify'])){
-                $where['user_nick'] = $post['nick'];
+                $where['username'] = $post['username'];
                 $data = $model->where($where)->find();
                 if($data == false || $data == null){
                     $ret = retMessage('', array($model->getDbError()));
@@ -16,8 +16,8 @@ class LoginController extends Controller{
                 if($data['is_admin'] == '2' || $data['is_admin'] == '3'){
                     if($data['passwd'] == md5($post['passwd'].$data['salt'])){
                         $insert['last_login_time'] = time();
-                        $insert['last_login_ip'] = getIp();
-                        $insert['login_time'] = $data['login_time']+1;
+                        $insert['last_login_ip'] = get_client_ip();
+                        $insert['login_times'] = (int)$data['login_times']++;
                         if(!$model->where($where)->save($insert)){
                             $ret = retErrorMessage('登录失败');
                             $this->ajaxReturn($ret, 'JSON');

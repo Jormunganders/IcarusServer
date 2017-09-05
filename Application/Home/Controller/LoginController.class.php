@@ -11,10 +11,10 @@ class LoginController extends BaseController
         if (IS_POST) {
             $model = M('User');
             $post = I('post.');
-            $where['user_nick'] = $post['nick'];
+            $where['username'] = $post['username'];
             $data = $model->where($where)->find();
 
-            if(empty($post['nick'])){
+            if(empty($post['username'])){
                 $ret = array(
                     'status' => 4004,
                     'message' => '昵称不能为空'
@@ -59,7 +59,7 @@ class LoginController extends BaseController
 
                 if ($data['is_seal'] == '0' && !empty($data) && $data['passwd'] == md5($post['passwd'] . $data['salt'])) {
                     $inert['last_login_time'] = time();
-                    $inert['last_login_ip'] = getIp();
+                    $inert['last_login_ip'] = get_client_ip();
                     $inert['login_times'] = $data['login_times'] + 1;
                     $model->where($where)->save($inert);
                     session('user', "is_login");
@@ -67,7 +67,7 @@ class LoginController extends BaseController
                     $ret = array(
                         'status' => 0,
                         'data' => array(
-                            'nick' => $post['nick'],
+                            'username' => $post['username'],
                             'head_img' => $data['head_img']
                         ),
                         'message' => '登录成功'
