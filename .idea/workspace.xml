@@ -5,8 +5,7 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/dataSources/302a1b88-810b-4489-8c79-d7bbf44b2d59.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/dataSources/bbe7d089-23c4-4744-9a40-60b5ea79d40a.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/dataSources/f62a6d71-2c42-4c26-860a-08181e2b8824.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/Home/Controller/SignController.class.php" afterPath="$PROJECT_DIR$/Application/Home/Controller/SignController.class.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.php" afterPath="$PROJECT_DIR$/index.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Application/Common/Controller/BaseController.class.php" afterPath="$PROJECT_DIR$/Application/Common/Controller/BaseController.class.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -128,8 +127,8 @@
       <file leaf-file-name="BaseController.class.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Application/Common/Controller/BaseController.class.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="182">
-              <caret line="7" column="1" lean-forward="true" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
+            <state relative-caret-position="130">
+              <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -138,8 +137,8 @@
       <file leaf-file-name="index.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-130">
-              <caret line="1" column="41" lean-forward="false" selection-start-line="1" selection-start-column="41" selection-end-line="1" selection-end-column="41" />
+            <state relative-caret-position="494">
+              <caret line="19" column="0" lean-forward="true" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -202,10 +201,10 @@
         <option value="$PROJECT_DIR$/Application/Admin/Controller/PostsController.class.php" />
         <option value="$PROJECT_DIR$/Application/Home/Controller/UploadController.class.php" />
         <option value="$PROJECT_DIR$/Application/Home/Controller/PostsController.class.php" />
-        <option value="$PROJECT_DIR$/Application/Common/Controller/BaseController.class.php" />
         <option value="$PROJECT_DIR$/../../../nginx/html/test.php" />
         <option value="$PROJECT_DIR$/Application/Home/Controller/SignController.class.php" />
         <option value="$PROJECT_DIR$/index.php" />
+        <option value="$PROJECT_DIR$/Application/Common/Controller/BaseController.class.php" />
       </list>
     </option>
   </component>
@@ -533,12 +532,12 @@
       <workItem from="1504524706106" duration="13428000" />
       <workItem from="1504570952907" duration="1050000" />
       <workItem from="1504572821356" duration="39482000" />
-      <workItem from="1504658217350" duration="12080000" />
+      <workItem from="1504658217350" duration="12447000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="66040000" />
+    <option name="totallyTimeSpent" value="66407000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="1" width="1368" height="734" extended-state="6" />
@@ -949,16 +948,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Application/Common/Controller/BaseController.class.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="7" column="1" lean-forward="true" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
+        <state relative-caret-position="130">
+          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-130">
-          <caret line="1" column="41" lean-forward="false" selection-start-line="1" selection-start-column="41" selection-end-line="1" selection-end-column="41" />
+        <state relative-caret-position="494">
+          <caret line="19" column="0" lean-forward="true" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
           <folding />
         </state>
       </provider>
