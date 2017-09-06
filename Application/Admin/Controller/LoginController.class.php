@@ -3,7 +3,7 @@ namespace Admin\Controller;
 use Common\Controller\PubController;
 class LoginController extends PubController{
     public function login(){
-        if(IS_POST){
+        if(IS_AJAX){
             $post = I('post.');
             $model = D('user');
             if(check_verify($post['verify'])){

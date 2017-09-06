@@ -4,7 +4,7 @@ use Think\Controller;
 class SignController extends Controller{
     public function sign()
     {
-        if (IS_POST) {
+        if (IS_AJAX) {
             $model = M('User');
             $post = I('post.');
             $where['username'] = $post['username'];

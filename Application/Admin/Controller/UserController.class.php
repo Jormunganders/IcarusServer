@@ -13,11 +13,6 @@ class UserController extends AdminController
         $this->ajaxReturn($ret, 'JSON');
     }
 
-    public function forgetPasswd()
-    {
-
-    }
-
     public function getOneUser()
     {
         $post = I("post.");
@@ -41,14 +36,6 @@ class UserController extends AdminController
         $post = I("post.");
         $model = D('User');
         $ret = $model->addModerator($post);
-        $this->ajaxReturn($ret, 'JSON');
-    }
-
-    public function editUserData()
-    {
-        $post = I("post.");
-        $model = D("User");
-        $ret = $model->editUserData($post);
         $this->ajaxReturn($ret, 'JSON');
     }
 
