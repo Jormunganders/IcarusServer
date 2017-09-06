@@ -18,7 +18,6 @@ class PostsController extends AdminController{
 
     public function movePosts(){
         $post = I('post.');
-
         $ret = D('Posts')->movePosts($post);
         $this->ajaxReturn($ret, 'JSON');
     }

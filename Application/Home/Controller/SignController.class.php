@@ -9,7 +9,7 @@ class SignController extends Controller{
             $post = I('post.');
             $where['username'] = $post['username'];
             if (empty($post['username'])) {
-                $ret = retErrorMessage('昵称不能为空');
+                $ret = retErrorMessage('用户名不能为空');
                 $this->ajaxReturn($ret, 'JSON');
             }elseif (empty($post['passwd'])) {
                 $ret = retErrorMessage('密码为空');
