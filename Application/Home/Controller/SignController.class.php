@@ -9,7 +9,8 @@ class SignController extends Controller
     public function sign()
     {
         $model = M('User');
-        $post = I('request.');
+        //$post = I('request.');
+        $post = $_POST;
         $where['username'] = $post['username'];
         if (empty($post['username'])) {
             $ret = retErrorMessage('用户名不能为空');
