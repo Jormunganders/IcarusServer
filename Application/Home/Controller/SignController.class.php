@@ -1,8 +1,6 @@
 <?php
 namespace Home\Controller;
-use \Common\Controller\BaseController;
 use Think\Controller;
-
 class SignController extends Controller{
     public function sign()
     {
