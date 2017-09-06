@@ -37,7 +37,7 @@ class LoginController extends PubController
                 $ret = retErrorMessage('不是管理员');
             }
         } else {
-            $ret = retErrorMessage('验证码错误');
+            $ret = retMessage('验证码错误',$post);
         }
         $this->ajaxReturn($ret, 'JSON');
     }
