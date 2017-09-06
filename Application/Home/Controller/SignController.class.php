@@ -11,6 +11,10 @@ class SignController extends Controller
         $model = M('User');
         //$post = I('request.');
         $post = $_POST;
+        dump($_POST);
+        dump(I('post.'));
+        dump(I('username'));
+        dump($_POST['username']);
         $where['username'] = $post['username'];
         if (empty($post['username'])) {
             $ret = retErrorMessage('用户名不能为空');
