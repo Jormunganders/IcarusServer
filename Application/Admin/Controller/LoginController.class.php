@@ -1,11 +1,8 @@
 <?php
 namespace Admin\Controller;
-use Think\Controller;
-class LoginController extends Controller{
+use Common\Controller\PubController;
+class LoginController extends PubController{
     public function login(){
-        if(!empty(session('admin_user')) && session('admin_user') == 'is_admin'){
-            return retErrorMessage('已登录，请不要重复登录');
-        }
         if(IS_POST){
             $post = I('post.');
             $model = D('user');

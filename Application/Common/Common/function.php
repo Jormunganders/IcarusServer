@@ -34,7 +34,15 @@ function retMessage($message = '', $data = array()){
     );
 }
 
-function retErrorMessage($message){
+function retErrorMessage($message, $data = array()){
+    if(!empty($data)) {
+        return array(
+            'status' => 'error',
+            'message' => $message,
+            'data' => $data
+        );
+    }
+
     return array(
         'status' => 'error',
         'message' => $message

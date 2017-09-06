@@ -143,22 +143,12 @@ class PostsModel extends Model{
         return retMessage('', array($ret));
     }
 
-    public function uploadImage(){
-        $config = array(
-            'maxSize'    =>    3145728,
-            'rootPath'   =>    __ROOT__ . '/Uploads/',
-            'savePath'   =>    '',
-            'saveName'   =>    array('uniqid',''),
-            'exts'       =>    array('jpg', 'gif', 'png', 'jpeg'),
-            'autoSub'    =>    true,
-            'subName'    =>    array('date','Ymd'),
-        );
-        $upload = new \Think\Upload($config);
-        $info   =   $upload->upload();
-        if(!$info) {
-            return retMessage($upload->getError());
-        }else{
-            return retMessage('', array('path' => $info['image']['savepath']));
-        }
+
+    public function getClassificationPosts($get){
+        //TODO 获取某个版块下的帖子
+    }
+
+    public function getOnePosts($get){
+        //TODO 获取某个帖子信息
     }
 }

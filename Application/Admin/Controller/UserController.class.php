@@ -1,16 +1,12 @@
 <?php
 
 namespace Admin\Controller;
+use Common\Controller\AdminController;
 
-use Think\Controller;
-
-class UserController extends Controller
+class UserController extends AdminController
 {
     public function editPasswd()
     {
-        if(empty(session('admin_user')) || session('admin_user') !== 'is_admin'){
-            $this->ajaxReturn(retMessage('请先登录'), 'JSON');
-        }
         $post = I("post.");
         $model = D('User');
         $ret = $model->editPasswd($post);
@@ -24,9 +20,6 @@ class UserController extends Controller
 
     public function getOneUser()
     {
-        if(empty(session('admin_user')) || session('admin_user') !== 'is_admin'){
-            $this->ajaxReturn(retMessage('请先登录'), 'JSON');
-        }
         $post = I("post.");
         $model = D('User');
         $ret = $model->getOneUser($post);
@@ -36,9 +29,6 @@ class UserController extends Controller
 
     public function getUserList()
     {
-        if(empty(session('admin_user')) || session('admin_user') !== 'is_admin'){
-            $this->ajaxReturn(retMessage('请先登录'), 'JSON');
-        }
         $model = D('User');
         $data = I('get.');
         $ret = $model->getUserlist($data['page'], $data['row']);
@@ -48,9 +38,6 @@ class UserController extends Controller
 
     public function addModerator()
     {
-        if(empty(session('admin_user')) || session('admin_user') !== 'is_admin'){
-            $this->ajaxReturn(retMessage('请先登录'), 'JSON');
-        }
         $post = I("post.");
         $model = D('User');
         $ret = $model->addModerator($post);
@@ -59,9 +46,6 @@ class UserController extends Controller
 
     public function editUserData()
     {
-        if(empty(session('admin_user')) || session('admin_user') !== 'is_admin'){
-            $this->ajaxReturn(retMessage('请先登录'), 'JSON');
-        }
         $post = I("post.");
         $model = D("User");
         $ret = $model->editUserData($post);
@@ -70,9 +54,6 @@ class UserController extends Controller
 
     public function addAdministrator()
     {
-        if(empty(session('admin_user')) || session('admin_user') !== 'is_admin'){
-            $this->ajaxReturn(retMessage('请先登录'), 'JSON');
-        }
         $post = I("post.");
         $model = D("User");
         $ret = $model->addAdministrator($post);
@@ -80,9 +61,6 @@ class UserController extends Controller
     }
 
     public function sealUser(){
-        if(empty(session('admin_user')) || session('admin_user') !== 'is_admin'){
-            $this->ajaxReturn(retMessage('请先登录'), 'JSON');
-        }
         $post = I("post.");
         $model = D("User");
         $ret = $model->sealUser($post);
