@@ -144,6 +144,10 @@ class PostsClassification extends Model{
     //featured加精版块
     //move移动版块
     public function actionClassification($get){
+        $where['cid'] = $get['cid'];
+        switch ($get['type']){
+            case 'show':
 
+        }
     }
 }

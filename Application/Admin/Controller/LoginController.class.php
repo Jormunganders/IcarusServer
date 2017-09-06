@@ -10,7 +10,6 @@ class LoginController extends PubController
     {
         $post = I('post.');
         $model = D('user');
-        $this->ajaxReturn(retMessage('', array($_SESSION, 'post' => $post)), 'JSON');
         if (check_verify($post['verify'])) {
             $where['username'] = $post['username'];
             $data = $model->where($where)->find();
