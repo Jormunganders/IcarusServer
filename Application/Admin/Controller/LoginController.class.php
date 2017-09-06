@@ -10,11 +10,12 @@ class LoginController extends PubController
     {
         $post = I('post.');
         $model = D('user');
+        $this->ajaxReturn(retMessage('', array($_SESSION, 'post' => $post)), 'JSON');
         if (check_verify($post['verify'])) {
             $where['username'] = $post['username'];
             $data = $model->where($where)->find();
             if ($data == false || $data == null) {
-                $ret = retMessage('', array($model->getDbError()));
+                $ret = retMessage('没有此用户', array($model->getDbError()));
                 $this->ajaxReturn($ret, 'JSON');
             }
             if ($data['is_admin'] == '2' || $data['is_admin'] == '3') {
@@ -30,6 +31,7 @@ class LoginController extends PubController
                     session('admin_user', 'is_admin');
                     session('admin_username', $post['username']);
                     $ret = retMessage('登录成功');
+                    $this->ajaxReturn($ret, 'JSON');
                 } else {
                     $ret = retErrorMessage('密码或帐号错误');
                 }
@@ -37,7 +39,7 @@ class LoginController extends PubController
                 $ret = retErrorMessage('不是管理员');
             }
         } else {
-            $ret = retMessage('验证码错误',$post);
+            $ret = retErrorMessage('验证码错误');
         }
         $this->ajaxReturn($ret, 'JSON');
     }
@@ -46,4 +48,5 @@ class LoginController extends PubController
     {
         show_verify();
     }
+
 }

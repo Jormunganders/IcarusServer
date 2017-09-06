@@ -65,7 +65,7 @@ class PostsClassification extends Model{
         if(!$this->where($where)->save($update)){
             return $parentId;
         }
-        $fail = array();
+        static $fail = array();
         foreach ($ret as $v){
             $fail[] = $this->deleteChild($v['cid']);
         }
@@ -111,10 +111,29 @@ class PostsClassification extends Model{
 
     protected function getTreeClassification($cid){
         $where['parent_id'] = $cid;
+        $where['is_delete'] = 0;
         $ret = $this->field('cid, c_name, ')
             ->where($where)
             ->select();
+        if(empty($ret)){
+            return $cid;
+        }
+        $tree = array($cid=>array());
+        foreach ($ret as $val){
+            $tree[$cid] = $this->getTreeClassification($val['cid']);
+            $tree[$cid]['cName'] = $val['c_name'];
+        }
+        return $tree;
+    }
 
+    public function getParentClassificationList($get){
+        $where['parents_id'] = 0;
+        $where['is_delete'] = $get['is_delete'];
+        $where['is_show'] = $get['is_show'];
+        $ret = $this->field('cid,c_name')
+            ->where($where)
+            ->select();
+        return $ret;
     }
 
     public function getClassificationList($get){
@@ -124,7 +143,7 @@ class PostsClassification extends Model{
     //show,hide显示和隐藏版块
     //featured加精版块
     //move移动版块
-    public function actionClassification($post){
+    public function actionClassification($get){
 
     }
 }
