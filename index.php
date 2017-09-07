@@ -1,6 +1,10 @@
 <?php
+ob_start();
+$header = "Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN'];
+ob_clean();
 header('Access-Control-Allow-Credentials:true');
-header("Access-Control-Allow-Origin: http://localhost:63342");
+header($header);
+//header("Access-Control-Allow-Origin: http://localhost:63342");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
