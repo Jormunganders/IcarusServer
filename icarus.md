@@ -62,7 +62,7 @@
 3. 登录
 * url
 	* http://115.159.56.141/index.php/Home/Login/login
-	* http://115.159.56.141/index.php/Admin/Login/showVerify
+	* http://115.159.56.141/index.php/Home/Login/showVerify
 * 需要输入的字段
 	* username:用户id
 	* verify:验证码
