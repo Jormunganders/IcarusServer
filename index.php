@@ -1,5 +1,6 @@
 <?php
-header("Access-Control-Allow-Origin: *");
+header('Access-Control-Allow-Credentials:true');
+header("Access-Control-Allow-Origin: http://localhost:63342");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]

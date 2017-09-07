@@ -44,6 +44,8 @@ class PostsModel extends Model{
 
     public function editPosts($post){
         $where['posts_id'] = $post['posts_id'];
+        $where['is_show'] = 1;
+        $where['is_delete'] = 0;
         //$ret = M('User')->field('username')->alias('u')->field('username')->join('__POSTS__ p on p.uid = u.uid')->find();
         $update['title'] = $post['title'];
         $update['content'] = $post['content'];
@@ -61,37 +63,52 @@ class PostsModel extends Model{
     //hide隐藏
     //recommend推荐
     public function actionPosts($action, $post){
+        $where['is_delete'] = 0;
+        $where['is_show'] = $post['is_show'];
         switch ($action){
             case 'sticky':
                 $update['is_top'] = 1;
-                $this->where('posts_id=%d', array($post['postsId']))
+                $this->where($where)
+                    ->where('posts_id=%d', array($post['postsId']))
                     ->save($update);
                 return retMessage('置顶成功');
             case 'hide':
                 $update['is_show'] = 1;
-                $this->where('posts_id=%d', array($post['postsId']))
+                $this->where($where)
+                    ->where('posts_id=%d', array($post['postsId']))
                     ->save($update);
                 return retMessage('隐藏成功');
             case 'recommend':
                 $update['is_featured'] = 1;
-                $this->where('posts_id=%d', array($post['postsId']))
+                $this->where($where)
+                    ->where('posts_id=%d', array($post['postsId']))
                     ->save($update);
                 return retMessage('推荐成功');
             case 'cancelSticky' :
                 $update['is_top'] = 0;
-                $this->where('posts_id=%d', array($post['postsId']))
+                $this->where($where)
+                    ->where('posts_id=%d', array($post['postsId']))
                     ->save($update);
                 return retMessage('取消置顶成功');
             case 'show' :
                 $update['is_show'] = 0;
-                $this->where('posts_id=%d', array($post['postsId']))
+                $this->where($where)
+                    ->where('posts_id=%d', array($post['postsId']))
                     ->save($update);
                 return retMessage('显示成功');
             case 'cancelRecommend' :
                 $update['is_featured'] = 0;
-                $this->where('posts_id=%d', array($post['postsId']))
+                $this->where($where)
+                    ->where('posts_id=%d', array($post['postsId']))
                     ->save($update);
                 return retMessage('取消置顶成功');
+            case 'recovery':
+                $update['is_delete'] = 0;
+                $where['is_delete'] = 1;
+                $this->where($where)
+                    ->where('posts_id=%d', array($post['postsId']))
+                    ->save($update);
+                return retMessage('回复成功');
             default :
                 return retErrorMessage('没有这种操作');
         }

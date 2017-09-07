@@ -1,8 +1,8 @@
 <?php
 namespace Home\Controller;
-use \Common\Controller;
+use Common\Controller\UserController as Controller;
 
-class UserController extends Controller\BaseController{
+class UserController extends Controller{
     public function editUserData()
     {
         $post = I("post.");

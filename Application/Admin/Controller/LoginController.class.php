@@ -8,6 +8,7 @@ class LoginController extends PubController
 {
     public function login()
     {
+        var_dump($_SERVER['HTTP_ORIGIN']);
         $post = I('post.');
         $model = D('user');
         if (check_verify($post['verify'])) {

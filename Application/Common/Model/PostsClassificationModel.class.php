@@ -39,7 +39,7 @@ class PostsClassification extends Model{
     public function deleteClassification($get){
         $ret = $this
             ->field('cid')
-            ->where('cid=%d ADN is_show=1 AND is_delete=0', array($get['cid']))
+            ->where('cid=%d ADN is_show=%d AND is_delete=0', array($get['cid'], $get['is_show']))
             ->find();
         if(empty($ret))
             return retErrorMessage('没有此版块');
@@ -75,13 +75,13 @@ class PostsClassification extends Model{
     public function editClassification($post){
         $ret = $this
             ->field('cid')
-            ->where('cid=%d AND is_show=1 AND is_delete=0', array($post['cid']))
+            ->where('cid=%d AND is_show=%d AND is_delete=0', array($post['cid'], $post['is_show']))
             ->find();
         if(empty($ret))
             return retErrorMessage('没有此版块');
         $ret = $this
             ->field('c_name')
-            ->where('is_show=1 AND is_delete=0 AND c_name=%s', array($post['cName']))
+            ->where('is_show=%d AND is_delete=0 AND c_name=%s', array($post['is_show'], $post['cName']))
             ->find();
         if(!empty($ret))
             return retErrorMessage('已有此版块名称');
@@ -97,6 +97,8 @@ class PostsClassification extends Model{
 
     public function getOneClassification($get){
         $where['cid'] = $get['cid'];
+        $where['is_show'] = $get['is_show'];
+        $where['is_delete'] = $get['is_delete'];
         $child = $this
             ->where($where)
             ->find();
@@ -109,9 +111,10 @@ class PostsClassification extends Model{
         return $child;
     }
 
-    protected function getTreeClassification($cid){
+    protected function getTreeClassification($cid, $get = array()){
         $where['parent_id'] = $cid;
-        $where['is_delete'] = 0;
+        $where['is_show'] = $get['is_show'];
+        $where['is_delete'] = $get['is_delete'];
         $ret = $this->field('cid, c_name, ')
             ->where($where)
             ->select();
@@ -136,6 +139,13 @@ class PostsClassification extends Model{
         return $ret;
     }
 
+    public function getDeleteClassificationList(){
+        $ret = $this->field('cid,c_name')
+            ->where('is_delete=1')
+            ->select();
+        return $ret;
+    }
+
     public function getClassificationList($get){
 
     }
@@ -145,9 +155,42 @@ class PostsClassification extends Model{
     //move移动版块
     public function actionClassification($get){
         $where['cid'] = $get['cid'];
+        $where['is_delete'] = 0;
         switch ($get['type']){
             case 'show':
-
+                $update['is_show'] = 1;
+                $this->where($where)
+                    ->save($update);
+                return retMessage('修改成功');
+            case 'hide':
+                $update['is_show'] = 0;
+                $this->where($where)
+                    ->save($update);
+                return retMessage('隐藏成功');
+            case 'featured':
+                $update['is_featured'] = 1;
+                $this->where($where)
+                    ->save($update);
+                return retMessage('加精成功');
+            case 'cancelFeatured':
+                $update['is_featured'] = 0;
+                $this->where($where)
+                    ->save($update);
+                return retMessage('取消加精成功');
+            case 'recovery':
+                $where['is_delete'] = 1;
+                $update['is_delete'] = 0;
+                $this->where($where)
+                    ->save($update);
+                return retMessage('恢复成功');
+            case 'move':
+                $update['parents_id'] = $get['parentId'];
+                $this->where($where)
+                    ->save($update);
+                return retMessage('移动成功');
+                //TODO 在控制器判断是否有这个父版块
+            default :
+                return retErrorMessage('没有这种操作');
         }
     }
 }

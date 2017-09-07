@@ -1,8 +1,8 @@
 <?php
 namespace Home\Controller;
-use Common\Controller\AdminController;
+use Common\Controller\UserController;
 
-class UploadController extends AdminController{
+class UploadController extends UserController{
     public function uploadImage(){
         $config = array(
             'maxSize'    =>    3145728,
