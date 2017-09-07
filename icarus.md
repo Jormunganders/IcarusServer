@@ -2,7 +2,7 @@
 1. 后台登录
 * 需要访问的url有
 	* http://115.159.56.141/index.php/Admin/Login/login
-	* http://115.159.56.141/index.php/Admin/Login/showVerify登录时需要的验证码，会返回一张jpeg格式的图片，要刷新的话就加个get参数，如：http://115.159.56.141/index.php/Admin/Login/showVerify?m=1，啥都行
+	* http://115.159.56.141/index.php/Admin/Login/showVerify 登录时需要的验证码，会返回一张jpeg格式的图片，要刷新的话就加个get参数，如：http://115.159.56.141/index.php/Admin/Login/showVerify?m=1 ，啥都行
 * post的字段有
 	* verify 验证码
 	* username 用户id
