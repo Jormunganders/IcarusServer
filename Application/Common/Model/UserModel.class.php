@@ -58,6 +58,7 @@ class UserModel extends Model
             return retErrorMessage('没有此用户');
         }
         $data['is_admin'] = 1;
+        $data['cid'] = $post['cid'];
         if ($this->where($where)->save($data) !== false) {
             $ret = retMessage('添加成功');
         } else {
@@ -96,7 +97,7 @@ class UserModel extends Model
     public function addAdministrator($post)
     {
         if (empty($post['username'])) {
-            $ret = retErrorMessage('请填写昵称');
+            $ret = retErrorMessage('请填写用户名称');
             return $ret;
         }
         $where['username'] = $post['username'];

@@ -10,7 +10,7 @@ class AdminController extends BaseController{
         }
     }
 
-    public function isOnePeople($username){
+    protected function isOnePeople($username){
         if($username != session('admin_username')){
             $this->ajaxReturn(retErrorMessage('用户名不一致'), 'JSON');
         }

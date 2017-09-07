@@ -48,4 +48,9 @@ class LoginController extends PubController
         show_verify();
     }
 
+    public function logout(){
+        session(null);
+        $this->ajaxReturn(retMessage('退出登录成功'), 'JSON');
+    }
+
 }

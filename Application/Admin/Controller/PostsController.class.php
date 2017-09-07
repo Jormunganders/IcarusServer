@@ -12,7 +12,7 @@ class PostsController extends AdminController{
 
     public function actionPosts(){
         $get = I('get.');
-        $ret = D('Posts')->actionPosts($get['action'], $get['posts_id']);
+        $ret = D('Posts')->actionPosts($get['action'], $get);
         $this->ajaxReturn($ret, 'JSON');
     }
 
@@ -40,6 +40,14 @@ class PostsController extends AdminController{
         $this->ajaxReturn($ret, 'JSON');
     }
 
+    public function getDeletePosts(){
+        $ret = M('Posts')
+            ->field('posts_id, title, author, content, keywords, add_time, click, is_end')
+            ->where('is_delete=1')
+            ->select();
+        return retMessage('', $ret);
+    }
+
     public function searchPostsByKeywords()
     {
         $post = I('post.');
@@ -47,4 +55,15 @@ class PostsController extends AdminController{
         $this->ajaxReturn($ret, 'JSON');
     }
 
+    public function getClassificationPosts(){
+        $get = I('get.');
+        $ret = D('Posts')->getClassificationPosts($get);
+        $this->ajaxReturn($ret, 'JSON');
+    }
+
+    public function getOnePosts(){
+        $get = I('get.');
+        $ret = D('Posts')->getOnePosts($get);
+        $this->ajaxReturn($ret, 'JSON');
+    }
 }

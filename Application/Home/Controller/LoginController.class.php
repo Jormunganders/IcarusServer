@@ -55,11 +55,15 @@ class LoginController extends PubController
                 $this->ajaxReturn($ret, 'JSON');
             }
         } else {
-            $ret = retMessage('验证码错误');
+            $ret = retErrorMessage('验证码错误');
 
             $this->ajaxReturn($ret, 'JSON');
         }
+    }
 
+    public function logout(){
+        session(null);
+        $this->ajaxReturn(retMessage('退出登录成功'), 'JSON');
     }
 
     public function showVerify()

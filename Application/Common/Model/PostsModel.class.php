@@ -62,9 +62,12 @@ class PostsModel extends Model{
     //Sticky置顶
     //hide隐藏
     //recommend推荐
+    //recovery
     public function actionPosts($action, $post){
         $where['is_delete'] = 0;
-        $where['is_show'] = $post['is_show'];
+        if(!empty($post['is_show'])){
+            $where['is_show'] = $post['is_show'];
+        }
         switch ($action){
             case 'sticky':
                 $update['is_top'] = 1;
@@ -108,7 +111,7 @@ class PostsModel extends Model{
                 $this->where($where)
                     ->where('posts_id=%d', array($post['postsId']))
                     ->save($update);
-                return retMessage('回复成功');
+                return retMessage('恢复成功');
             default :
                 return retErrorMessage('没有这种操作');
         }
@@ -117,31 +120,51 @@ class PostsModel extends Model{
     //更改时，先查出所有版块信息，弄一个像下拉列表那样的，第一个下拉列表是主版块，第二个是二级版块，以此类推，只需给最后版块的id就好
     public function movePosts($post){
         $update['cid'] = $post['cid'];
-        M('PostsClassification')
+        if(M('PostsClassification')
             ->where('posts_id=%d',array($post['postsId']))
-            ->save($update);
-        return retMessage('更改成功');
+            ->save($update)) {
+            return retMessage('更改成功');
+        }else{
+            return retErrorMessage('更改失败');
+        }
     }
 
-    public function getTopPostsList($page = '', $row = '20'){
+    public function getTopPostsList($page = '', $row = '20', $is_show = ''){
+        $where['is_top'] = 1;
+        $where['is_delete'] = 0;
+        if(!empty($is_show)){
+            $where['is_show'] = $is_show;
+        }
         $ret = $this
-            ->where('is_top=1 AND is_show=1 AND is_delete=0')
+            ->where($where)
+            ->order('posts_id desc')
             ->page($page.','.$row)
             ->select();
         return retMessage('', $ret);
     }
 
-    public function getRecommendPostsList($page = '', $row = '20'){
+    public function getRecommendPostsList($page = '', $row = '20', $is_show = ''){
+        if(!empty($is_show)){
+            $where['is_show'] = $is_show;
+        }
+        $where['is_featured'] = 1;
+        $where['is_delete'] = 0;
         $ret = $this
-            ->where('is_featured=1 AND is_show=1 AND is_delete=0')
+            ->where($where)
+            ->order('posts_id desc')
             ->page($page.','.$row)
             ->select();
         return retMessage('', $ret);
     }
 
-    public function getPostsList($page = '', $row = '20'){
+    public function getPostsList($page = '', $row = '20', $is_show = ''){
+        if(!empty($is_show)){
+            $where['is_show'] = $is_show;
+        }
+        $where['is_delete'] = 0;
         $ret = $this
-            ->where('is_show=1 AND is_delete=0')
+            ->where($where)
+            ->order('posts_id')
             ->page($page.','.$row)
             ->select();
         return retMessage('', $ret);
@@ -154,18 +177,37 @@ class PostsModel extends Model{
                 IF(MATCH (keywords) AGAINST({$post['keywords']}) > 0 
                 AND MATCH (title) AGAINST({$post['keywords']}) > 0) as score1
                 FROM icarus_posts 
-                WHERE MATCH(title, keywords) AGAINST({$post['keywords']} IN BOOLEAN MODE)
-                ORDER BY score1 DESC, keywords_score DESC, title_score DESC";
+                WHERE MATCH(title, keywords) AGAINST({$post['keywords']} IN BOOLEAN MODE) AND id_delete = 0 AND is_show = {$post['is_show']}
+                ORDER BY posts_id DESC, score1 DESC, keywords_score DESC, title_score DESC";
         $ret = $this->query($sql);
         return retMessage('', array($ret));
     }
 
-
-    public function getClassificationPosts($get){
-        //TODO 获取某个版块下的帖子
+    public function getClassificationPosts($get, $is_show = ''){
+        $ret = M('Classification')->field('cid')
+            ->where('is_delete=0 ADN cid=%d', array($get['cid']));
+        if(empty($ret))
+            return retErrorMessage('没有此版块');
+        $where['p.is_delete'] = 0;
+        if(!empty($is_show)){
+            $where['p.is_show'] = $is_show;
+        }
+        $ret = $this->field('p.posts_id, p.title, p.author, p.content, p.keywords, p.add_time, p.click, p.is_end')
+            ->alias('p')
+            ->join("icarus_posts_classification pc ON p.posts_id=pc.posts_id")
+            ->where($where)
+            ->select();
+        return retMessage('', $ret);
     }
 
     public function getOnePosts($get){
-        //TODO 获取某个帖子信息
+        if(empty($get['is_show'])){
+            $get['is_show'] = '';
+        }
+        $ret = $this
+            ->field('posts_id, title, author, content, keywords, is_top, is_end, is_featured, add_time, click' . $get['is_show'])
+            ->where('posts_id=%d AND is_delete=0')
+            ->select();
+        return retMessage('', $ret);
     }
 }
