@@ -51,12 +51,15 @@ class LoginController extends PubController
                 $inert['last_login_ip'] = get_client_ip();
                 $inert['login_times'] = $data['login_times'] + 1;
                 $model->where($where)->save($inert);
+                $expire = 60*60*3;
+                /*ini_set('session.gc_maxlifetime',  $expire);
+                ini_set('session.cookie_lifetime',  $expire);
                 session_start();
                 $_SESSION['user'] = 'is_login';
-                $_SESSION['username'] = $post['username'];
-                /*session(array('name' => 'user', 'expire' => 60 * 60 * 3));
+                $_SESSION['username'] = $post['username'];*/
+                session(array('name' => 'user', 'expire' => 60 * 60 * 3));
                 session('user', "is_login");
-                session('username', $post['username']);*/
+                session('username', $post['username']);
                 $token = md5(time().$inert['last_login_ip'].mt_rand(1, 1000));
                 $redis = \Common\Model\RedisModel::getInstance();
                 $redis->set($post['username'], $token);

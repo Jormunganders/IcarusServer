@@ -35,8 +35,6 @@ define("DEFAULT_THEME","default");
 
 // 定义模板文件默认目录
 define("TMPL_PATH","./Template/".DEFAULT_THEME."/");
-ini_set('session.save_handler', 'redis');
-ini_set('session.save_path', 'tcp://127.0.0.1:6379');
 // 引入ThinkPHP入口文件
 require './ThinkPHP/ThinkPHP.php';
 

@@ -8,12 +8,12 @@ class UserController extends BaseController{
     }
 
     protected function is_login(){
-        /*if(empty(session('user')) || session('user') !== 'is_login'){
+        if(empty(session('user')) || session('user') !== 'is_login'){
             $this->ajaxReturn(retErrorMessage('请先登录'), 'JSON');
-        }*/
-        if(empty($_SESSION['user']) || $_SESSION['user'] !== 'is_login'){
-            $this->ajaxReturn(retErrorMessage('请先登录', array($_SESSION['user'])), 'JSON');
         }
+        /*if(empty($_SESSION['user']) || $_SESSION['user'] !== 'is_login'){
+            $this->ajaxReturn(retErrorMessage('请先登录', array($_SESSION['user'])), 'JSON');
+        }*/
     }
 
     protected function isOnePeople($username){

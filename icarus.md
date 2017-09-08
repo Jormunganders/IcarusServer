@@ -72,3 +72,29 @@
 1. 减少了以下api接口
     * 修改用户信息的api接口删除
     * 在增加版主时还得加上版块的id，即字段cid
+
+# 9月8号增加的API
+# 前台接口
+1 登录口令验证
+    * url:Home/Login/verification
+    * 需要字段
+        * token
+        * username
+2 用户资料修改
+    * url:Home/User/editUserData
+    * 需要字段
+        * email
+        * username
+        * nick
+3 修改密码
+    * url:Home/User/editPasswd
+    * 需要字段
+        * username
+        * old_passwd
+        * passwd
+        * repasswd
+4 登出接口
+    * url:Home/Login/logout
+    * 需要字段:
+        * 无
+        

@@ -24,6 +24,7 @@ class UserController extends Controller{
     }
 
     public function editPasswd(){
+
         $post = I('post.');
 
         $this->is_login();
