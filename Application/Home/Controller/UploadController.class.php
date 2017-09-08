@@ -4,6 +4,7 @@ use Common\Controller\UserController;
 
 class UploadController extends UserController{
     public function uploadImage(){
+        $this->is_login();
         $config = array(
             'maxSize'    =>    3145728,
             'rootPath'   =>    __ROOT__ . '/Uploads/',

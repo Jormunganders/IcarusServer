@@ -9,6 +9,10 @@ class LoginController extends PubController
 
     public function login()
     {
+        if(!empty(session('user')) && session('user') == 'is_login'){
+            $this->ajaxReturn(retErrorMessage('已登录，请不要重复登录'), 'JSON');
+        }
+
         $model = M('User');
         $post = I('post.');
         $where['username'] = $post['username'];
@@ -47,11 +51,18 @@ class LoginController extends PubController
                 $inert['last_login_ip'] = get_client_ip();
                 $inert['login_times'] = $data['login_times'] + 1;
                 $model->where($where)->save($inert);
-                session(array('name' => 'user', 'expire' => 60 * 60 * 3));
+                session_start();
+                $_SESSION['user'] = 'is_login';
+                $_SESSION['username'] = $post['username'];
+                /*session(array('name' => 'user', 'expire' => 60 * 60 * 3));
                 session('user', "is_login");
-                session('username', $post['username']);
+                session('username', $post['username']);*/
+                $token = md5(time().$inert['last_login_ip'].mt_rand(1, 1000));
+                $redis = \Common\Model\RedisModel::getInstance();
+                $redis->set($post['username'], $token);
+                $redis->setTimeout($post['username'], 2592000);
 
-                $ret = retMessage('登录成功');
+                $ret = retMessage('登录成功', array('username' => $post['username'], 'token' => $token));
                 $this->ajaxReturn($ret, 'JSON');
             }
         } else {
@@ -61,7 +72,26 @@ class LoginController extends PubController
         }
     }
 
+    public function verification(){
+        $post = I('post.');
+
+        $redis = \Common\Model\RedisModel::getInstance();
+        $token = $redis->get($post['username']);
+        if(!$token == $post['token'] || $token === false){
+            $this->ajaxReturn(retErrorMessage('登录失败'), 'JSON');
+        }
+        session(array('name' => 'user', 'expire' => 60 * 60 * 3));
+        session('user', "is_login");
+        session('username', $post['username']);
+        $this->ajaxReturn(retMessage('登录成功'), 'JSON');
+    }
+
     public function logout(){
+        $redis = \Common\Model\RedisModel::getInstance();
+        $ret = $redis->get(session('username'));
+        if($ret !== false){
+            $redis->delete(session('username'));
+        }
         session(null);
         $this->ajaxReturn(retMessage('退出登录成功'), 'JSON');
     }

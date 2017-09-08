@@ -70,21 +70,16 @@ class UserModel extends Model
     public function editUserData($post)
     {
         $where['username'] = $post['username'];
-        if (empty($post['email'])) {
-            return retErrorMessage('email字段为空');
-        }
-        if (empty($post['username'])) {
-            return retErrorMessage('username字段为空');
-        }
+        $wh['email'] = $post['email'];
         if(empty($this->where($where)->find())){
             return retErrorMessage('没有此用户');
         }
-        $wh['email'] = $post['email'];
         if(!empty($this->where($wh)->find())){
             $ret = retErrorMessage('邮箱已被注册');
             return $ret;
         }
         empty($post['head_img']) ? $data['head_img'] = '' :$data['head_img'] = $post['head_img'];
+        $data['user_nick'] = $post['nick'];
         $data['email'] = $post['email'];
         if ($this->where($where)->save($data) != false) {
             $ret = retMessage('修改成功');

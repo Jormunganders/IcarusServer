@@ -135,7 +135,9 @@ class PostsModel extends Model{
         if(!empty($is_show)){
             $where['is_show'] = $is_show;
         }
+        //TODO 限制返回字段，不要返回uid
         $ret = $this
+            ->field('posts_id, title, author, content, keywords, is_top, is_end, is_featured, add_time, click')
             ->where($where)
             ->order('posts_id desc')
             ->page($page.','.$row)
@@ -150,6 +152,7 @@ class PostsModel extends Model{
         $where['is_featured'] = 1;
         $where['is_delete'] = 0;
         $ret = $this
+            ->field('posts_id, title, author, content, keywords, is_top, is_end, is_featured, add_time, click')
             ->where($where)
             ->order('posts_id desc')
             ->page($page.','.$row)
@@ -163,6 +166,7 @@ class PostsModel extends Model{
         }
         $where['is_delete'] = 0;
         $ret = $this
+            ->field('posts_id, title, author, content, keywords, is_top, add_time, click, is_featured, is_end')
             ->where($where)
             ->order('posts_id')
             ->page($page.','.$row)
@@ -196,17 +200,22 @@ class PostsModel extends Model{
             ->alias('p')
             ->join("icarus_posts_classification pc ON p.posts_id=pc.posts_id")
             ->where($where)
+            ->order('posts_id')
             ->select();
         return retMessage('', $ret);
     }
 
     public function getOnePosts($get){
-        if(empty($get['is_show'])){
-            $get['is_show'] = '';
+        $is_show = ', is_show';
+        if(!empty($get['is_show'])){
+            $is_show = '';
+            $where['is_show'] = $get['is_show'];
         }
+        $where['posts_id'] = $get['postsId'];
+        $where['is_delete'] = 0;
         $ret = $this
-            ->field('posts_id, title, author, content, keywords, is_top, is_end, is_featured, add_time, click' . $get['is_show'])
-            ->where('posts_id=%d AND is_delete=0')
+            ->field('posts_id, title, author, content, keywords, is_top, is_end, is_featured, add_time, click' . $is_show)
+            ->where($where)
             ->select();
         return retMessage('', $ret);
     }

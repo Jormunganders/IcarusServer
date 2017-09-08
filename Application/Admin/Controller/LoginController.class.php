@@ -8,6 +8,9 @@ class LoginController extends PubController
 {
     public function login()
     {
+        if(!empty(session('admin_user')) && session('admin_user') === 'is_admin'){
+            $this->ajaxReturn(retErrorMessage('已登录，请不要重复登录'), 'JSON');
+        }
         $post = I('post.');
         $model = D('user');
         if (check_verify($post['verify'])) {
@@ -21,7 +24,7 @@ class LoginController extends PubController
                 if ($data['passwd'] == md5($post['passwd'] . $data['salt'])) {
                     $insert['last_login_time'] = time();
                     $insert['last_login_ip'] = get_client_ip();
-                    $insert['login_times'] = (int)$data['login_times']++;
+                    $insert['login_times'] = $data['login_times']+1;
                     if (!$model->where($where)->save($insert)) {
                         $ret = retErrorMessage('登录失败');
                         $this->ajaxReturn($ret, 'JSON');

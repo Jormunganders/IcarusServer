@@ -8,4 +8,7 @@ return array(
 //***********************************URL*************************************
     'URL_MODEL'             =>  1,                            // 为了兼容性更好而设置成1 如果确认服务器开启了mod_rewrite 请设置为 2
     'URL_CASE_INSENSITIVE'  =>  false,                        // 区分url大小写
+//***********************************SESSION*********************************
+    //'SESSION_OPTIONS'       =>  array('path' => '/tmp/session')
+    //'SESSION_TYPE'          =>  'Mysqli'
 );

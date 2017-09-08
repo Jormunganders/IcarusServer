@@ -8,8 +8,11 @@ class UserController extends BaseController{
     }
 
     protected function is_login(){
-        if(empty(session('user')) || session('user') !== 'is_login'){
-            return retErrorMessage('请先登录');
+        /*if(empty(session('user')) || session('user') !== 'is_login'){
+            $this->ajaxReturn(retErrorMessage('请先登录'), 'JSON');
+        }*/
+        if(empty($_SESSION['user']) || $_SESSION['user'] !== 'is_login'){
+            $this->ajaxReturn(retErrorMessage('请先登录', array($_SESSION['user'])), 'JSON');
         }
     }
 
@@ -21,7 +24,7 @@ class UserController extends BaseController{
 
     protected function isOwn($data){
         $ret = M('Posts')->field('uid')
-            ->where('posts_id=%d', array($data['posts_id']))
+            ->where('posts_id=%d', array($data['postsId']))
             ->find();
         $user = M('User')->field('username')
             ->where('uid=%d', array($ret['uid']))

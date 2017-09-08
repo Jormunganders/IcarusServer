@@ -9,7 +9,6 @@ function show_verify($config=''){
             'imageW'=>240,
             'length'=>4,
             'fontttf'=>'4.ttf',
-            'reset'=>'false',
         );
     }
     $verify=new \Think\Verify($config);

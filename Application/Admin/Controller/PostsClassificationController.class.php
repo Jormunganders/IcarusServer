@@ -3,5 +3,9 @@ namespace Admin\Controller;
 use Common\Controller\AdminController;
 
 class PostsClassificationController extends AdminController{
-    //TODO
+    public function addClassification(){
+        $post = I('post.');
+
+        //TODO
+    }
 }

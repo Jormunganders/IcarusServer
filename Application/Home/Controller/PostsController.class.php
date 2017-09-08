@@ -16,8 +16,6 @@ class PostsController extends UserController{
         $this->ajaxReturn($ret, 'JSON');
     }
 
-    //TODO 很多都要判断是否有权限
-
     public function deletePosts(){
         $get = I('get.');
 
@@ -53,6 +51,8 @@ class PostsController extends UserController{
         if(!$this->isAuthority($get['cid'])){
             $this->ajaxReturn(retErrorMessage('没有权限'), 'JSON');
         }
+
+        $get['is_show'] = 1;
 
         $ret = D('Posts')->actionPosts($get['action'], $get);
         $this->ajaxReturn($ret, 'JSON');
@@ -106,7 +106,7 @@ class PostsController extends UserController{
     }
 
     public function getOnePosts(){
-        $gte = I('gte.');
+        $get = I('get.');
         $get['is_show'] = 1;
 
         $ret = D('Posts')->getOnePosts($get);
