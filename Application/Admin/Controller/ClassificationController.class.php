@@ -6,36 +6,62 @@ class ClassificationController extends AdminController{
    public function addClassification(){
        $post = I('post.');
 
+       foreach ($post as $key => $val){
+           $this->is_empty($key, $val);
+       }
        $ret = D('Classification')->addClassification($post);
-       $this->ajaxReturn($ret, 'JSON');
+       if($ret[0] === false){
+           $this->ajaxReturn(retErrorMessage($ret[1]), 'JSON');
+       }
+       $this->ajaxReturn(retMessage($ret[1]), 'JSON');
    }
 
    public function deleteClassification(){
        $get = I('get.');
 
+       foreach ($get as $key => $val){
+           $this->is_empty($key, $val);
+       }
        $ret = D('Classification')->deleteClassification($get);
-       $this->ajaxReturn($ret, 'JSON');
+       if($ret[0] === false){
+           $this->ajaxReturn(retErrorMessage($ret[1], $ret[3]), 'JSON');
+       }
+       $this->ajaxReturn(retMessage($ret[1]), 'JSON');
    }
 
    public function editClassification(){
        $post = I('post.');
 
+       foreach ($post as $key => $val){
+           $this->is_empty($key, $val);
+       }
        $ret = D('Classification')->editClassification($post);
-       $this->ajaxReturn($ret, 'JSON');
+       if($ret[0] === false){
+           $this->ajaxReturn(retErrorMessage($ret[1]), 'JSON');
+       }
+       $this->ajaxReturn(retMessage($ret[1]), 'JSON');
    }
 
    public function getOneClassification(){
        $get = I('get.');
        //TODO 将返回的字段名称处理一下
 
+       foreach ($get as $key => $val){
+           $this->is_empty($key, $val);
+       }
        $ret = D('Classification')->getOneClassification($get);
-       $this->ajaxReturn(retMessage('', $ret), 'JSON');
+       if($ret[0] === false){
+           $this->ajaxReturn(retErrorMessage($ret[1]), 'JSON');
+       }
+       $this->ajaxReturn(retMessage($ret[1], $ret[3]), 'JSON');
    }
 
    public function getTreeClassification(){
        $get = I('get.');
-
-       $ret = D('Classification')->getTreeClassification($get['cid'], $get);
+       foreach ($get as $key => $val){
+           $this->is_empty($key, $val);
+       }
+       $ret = D('Classification')->getTreeClassification($get['cid']);
        $this->ajaxReturn(retMessage('',$ret), 'JSON');
    }
 
@@ -53,7 +79,23 @@ class ClassificationController extends AdminController{
    public function actionClassification(){
        $get = I('get.');
 
+       foreach ($get as $key => $val){
+           $this->is_empty($key, $val);
+       }
+
+       if($get['action'] == 'move'){
+           $ret = M('Classification')
+               ->field('cid')
+               ->where(array('cid' => $get['parentId']))
+               ->find();
+           if(empty($ret)){
+               $this->ajaxReturn(retErrorMessage('没有这个版块'), 'JSON');
+           }
+       }
        $ret = D('Classification')->actionClassification($get);
-       $this->ajaxReturn(retMessage('', $ret), 'JSON');
+       if($ret[0] === false){
+           $this->ajaxReturn(retErrorMessage($ret[1]), 'JSON');
+       }
+       $this->ajaxReturn(retMessage($ret[1]), 'JSON');
    }
 }

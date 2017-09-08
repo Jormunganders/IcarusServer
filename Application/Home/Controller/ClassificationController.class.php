@@ -7,14 +7,24 @@ class ClassificationController extends UserController{
         $get = I('get.');
         $get['is_show'] = 1;
 
+        foreach ($get as $key => $val){
+            $this->is_empty($key, $val);
+        }
         $ret = D('Classification')->getOneClassification($get);
-        $this->ajaxReturn(retMessage('', $ret), 'JSON');
+
+        if($ret[0] === false){
+            $this->ajaxReturn(retErrorMessage($ret[1]), 'JSON');
+        }
+        $this->ajaxReturn(retMessage($ret[1], $ret[3]), 'JSON');
     }
 
     public function getTreeClassification(){
         $get = I('get.');
         $get['is_show'] = 1;
 
+        foreach ($get as $key => $val){
+            $this->is_empty($key, $val);
+        }
         $ret = D('Classification')->getTreeClassification($get['cid'], $get);
         $this->ajaxReturn(retMessage('', $ret), 'JSON');
     }

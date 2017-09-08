@@ -40,7 +40,7 @@ class UserController extends BaseController{
 
         $ret = M('User')
             ->field('is_admin, cid')
-            ->where('username=%s', array($username))
+            ->where(array('username' => $username))
             ->find();
         if($ret['is_admin'] == 2 || $ret['is_admin'] == 3){
             return true;

@@ -3,9 +3,9 @@ namespace Common\Model;
 use Think\Model;
 
 class PostsModel extends Model{
-    protected $_auto = array(
-        array('add_time', 'time', 1, 'function'),
-    );
+    /*protected $_auto = array(
+        array('add_time', 'time', 1, 'function')
+    );*/
 
     public function publishPosts($post){
         $insert['uid'] = $post['uid'];
@@ -13,6 +13,7 @@ class PostsModel extends Model{
         $insert['author'] = $post['username'];
         $insert['content'] = $post['content'];
         $insert['keywords'] = $post['keywords'];
+        $insert['add_time'] = time();
         $c_p['cid'] = $post['cid'];
 
         if($this->create()){
@@ -20,13 +21,13 @@ class PostsModel extends Model{
             if($result !== false) {
                 $c_p['posts_id'] = $result;
                 $result = D('PostsClassification')->add($c_p);
-                ($result !== false) ? $ret = retErrorMessage('发帖失败') : $ret = retMessage('发帖成功');
+                ($result == false) ? $ret = retErrorMessage('发帖失败') : $ret = retMessage('发帖成功');
                 return $ret;
             }
             else
-                return retErrorMessage('发帖失败');
+                return retErrorMessage('发帖失败了');
         }else{
-            return retErrorMessage('发帖失败');
+            return retErrorMessage('发帖失败了！');
         }
         //TODO 将里面的图片链接取出
         //TODO 还要用monggodb加入个人所发帖
@@ -43,7 +44,7 @@ class PostsModel extends Model{
     }
 
     public function editPosts($post){
-        $where['posts_id'] = $post['posts_id'];
+        $where['posts_id'] = $post['postsId'];
         $where['is_show'] = 1;
         $where['is_delete'] = 0;
         //$ret = M('User')->field('username')->alias('u')->field('username')->join('__POSTS__ p on p.uid = u.uid')->find();
@@ -76,7 +77,7 @@ class PostsModel extends Model{
                     ->save($update);
                 return retMessage('置顶成功');
             case 'hide':
-                $update['is_show'] = 1;
+                $update['is_show'] = 0;
                 $this->where($where)
                     ->where('posts_id=%d', array($post['postsId']))
                     ->save($update);
@@ -94,7 +95,8 @@ class PostsModel extends Model{
                     ->save($update);
                 return retMessage('取消置顶成功');
             case 'show' :
-                $update['is_show'] = 0;
+                $update['is_show'] = 1;
+                $where['is_show'] = 0;
                 $this->where($where)
                     ->where('posts_id=%d', array($post['postsId']))
                     ->save($update);
@@ -104,7 +106,7 @@ class PostsModel extends Model{
                 $this->where($where)
                     ->where('posts_id=%d', array($post['postsId']))
                     ->save($update);
-                return retMessage('取消置顶成功');
+                return retMessage('取消推荐成功');
             case 'recovery':
                 $update['is_delete'] = 0;
                 $where['is_delete'] = 1;
@@ -168,23 +170,24 @@ class PostsModel extends Model{
         $ret = $this
             ->field('posts_id, title, author, content, keywords, is_top, add_time, click, is_featured, is_end')
             ->where($where)
-            ->order('posts_id')
             ->page($page.','.$row)
+            ->order('posts_id desc')
             ->select();
         return retMessage('', $ret);
     }
 
     public function searchPostsByKeywords($post){
+        //TODO 没有用
         $sql = "SELECT *, 
                 MATCH (keywords) AGAINST({$post['keywords']}) as keywords_score,
                 MATCH (title) AGAINST({$post['keywords']}) as title_score,
                 IF(MATCH (keywords) AGAINST({$post['keywords']}) > 0 
-                AND MATCH (title) AGAINST({$post['keywords']}) > 0) as score1
+                AND MATCH (title) AGAINST({$post['keywords']}) > 0) as score1 
                 FROM icarus_posts 
                 WHERE MATCH(title, keywords) AGAINST({$post['keywords']} IN BOOLEAN MODE) AND id_delete = 0 AND is_show = {$post['is_show']}
                 ORDER BY posts_id DESC, score1 DESC, keywords_score DESC, title_score DESC";
         $ret = $this->query($sql);
-        return retMessage('', array($ret));
+        return retMessage('', array($this->getDbError(),$ret));
     }
 
     public function getClassificationPosts($get, $is_show = ''){
@@ -216,7 +219,7 @@ class PostsModel extends Model{
         $ret = $this
             ->field('posts_id, title, author, content, keywords, is_top, is_end, is_featured, add_time, click' . $is_show)
             ->where($where)
-            ->select();
-        return retMessage('', $ret);
+            ->find();
+        return retMessage('获取成功', $ret);
     }
 }

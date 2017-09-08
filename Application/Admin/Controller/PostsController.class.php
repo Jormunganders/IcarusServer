@@ -64,6 +64,8 @@ class PostsController extends AdminController{
     public function getOnePosts(){
         $get = I('get.');
         $ret = D('Posts')->getOnePosts($get);
+        $click = $ret['data']['click'] + 1;
+        M('Posts')->where(array('posts_id' => $get['postsId']))->save(array('click'=>$click));
         $this->ajaxReturn($ret, 'JSON');
     }
 }

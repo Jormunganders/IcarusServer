@@ -5,9 +5,13 @@ use Common\Controller\UserController;
 class PostsController extends UserController{
     public function publishPosts(){
         $post = I('post.');
+        $model = M('User');
         $this->is_login();
         $this->isOnePeople($post['username']);
-        $ret = M('User')->field('uid')->where('username=%s', array(session('username')))->find();
+        $ret = $model
+            ->field('uid')
+            ->where(array('username' => $post['username']))
+            ->find();
         if(empty($ret)){
             $this->ajaxReturn(retErrorMessage('没有这个用户'), 'JSON');
         }
@@ -110,6 +114,9 @@ class PostsController extends UserController{
         $get['is_show'] = 1;
 
         $ret = D('Posts')->getOnePosts($get);
+        $click = $ret['data']['click'] + 1;
+        M('Posts')->where(array('posts_id' => $get['postsId']))->save(array('click'=>$click));
+
         $this->ajaxReturn($ret, 'JSON');
     }
 }

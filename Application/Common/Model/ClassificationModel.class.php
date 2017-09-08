@@ -2,24 +2,26 @@
 namespace Common\Model;
 
 class ClassificationModel extends BaseModel {
-    protected $_auto = array(
-        array('is_show', '1', 1),
-        array('is_delete', '0', 1),
-    );
 
     //如果没有父版块，就传个parentId=0
     public function addClassification($post){
         $where['cid'] = $post['parentId'];
         $where['is_delete'] = 0;
-        $ret = $this->field('cid')->where($where)->find();
-        if(empty($ret))
-            return retErrorMessage('没有此父版块');
+        if($post['parentId'] != 0){
+            $ret = $this->field('cid')->where($where)->find();
+            if(empty($ret))
+                return array(false, '没有此父版块');
+        }
+
+        $parent['is_delete'] = 0;
+        $parent['c_name'] = $post['cName'];
         $ret = $this
             ->field('c_name')
-            ->where('is_show=1 AND is_delete=0 c_name=%s', array($post['cName']))
+            ->where($parent)
             ->find();
         if(!empty($ret))
-            return retErrorMessage('此版块名称已添加，请不要重复添加');
+            return array(false, '此版块名称已添加，请不要重复添加');
+
 
         $insert['parents_id'] = $post['parentId'];
         $insert['c_name'] = $post['cName'];
@@ -27,9 +29,9 @@ class ClassificationModel extends BaseModel {
 
         if($this->create()){
             $this->add($insert);
-            return retMessage('添加成功');
+            return array(true, '添加成功');
         }else{
-            return retErrorMessage('添加失败');
+            return array(false, '添加失败');
         }
 
     }
@@ -40,16 +42,17 @@ class ClassificationModel extends BaseModel {
             ->where('cid=%d AND is_delete=0', array($get['cid']))
             ->find();
         if(empty($ret))
-            return retErrorMessage('没有此版块');
+            return array(false, '没有此版块');
+
         $where['cid'] = $get['cid'];
         $delete['is_delete'] = 1;
         $this->where($where)
             ->save($delete);
         $ret = $this->deleteChild($get['cid']);
-        if(!empty($ret)){
-            return retErrorMessage('以下版块删除未成功', $ret);
+        if(!isset($ret)){
+            return array(false, '以下版块删除未成功', $ret);
         }
-        return retMessage('删除版块成功');
+        return array(true, '删除版块成功');
     }
 
     protected function deleteChild($parentId){
@@ -76,17 +79,21 @@ class ClassificationModel extends BaseModel {
             ->where('cid=%d AND is_delete=0', array($post['cid']))
             ->find();
         if(empty($ret))
-            return retErrorMessage('没有此版块');
+            return array(false, '没有此版块');
+
+        $where['is_delete'] = 0;
+        $where['c_name'] = $post['cName'];
         $ret = $this
             ->field('c_name')
-            ->where('is_delete=0 AND c_name=%s', array($post['cName']))
+            ->where($where)
             ->find();
         if(!empty($ret))
-            return retErrorMessage('已有此版块名称');
+            return array(false, '已有此版块名称');
 
         $update['c_name'] = $post['cName'];
-        $this->add($update);
-        return retMessage('修改成功');
+        $wh['cid'] = $post['cid'];
+        $this->where($wh)->save($update);
+        return array(true, '修改成功');
     }
 
     public function searchClassification($post){
@@ -99,20 +106,24 @@ class ClassificationModel extends BaseModel {
             $where['is_show'] = $get['is_show'];
         }
         $where['is_delete'] = 0;
-        $child = $this->field('cid, c_name, parent_id, is_featured')
+        $child = $this->field('cid, c_name, parents_id, is_featured')
             ->where($where)
             ->find();
 
+        if(empty($child)){
+            return array(false, '没有此版块');
+        }
+
         $parent = $this
             ->field('c_name')
-            ->where('cid=%d', array($child['parent_id']))
+            ->where('cid=%d', array($child['parents_id']))
             ->find();
         $child['parentName'] = $parent['c_name'];
-        return $child;
+        return array(true, '', $child);
     }
 
     public function getTreeClassification($cid, $get = array()){
-        $where['parent_id'] = $cid;
+        $where['parents_id'] = $cid;
         if(!empty($get['is_show'])){
             $where['is_show'] = $get['is_show'];
         }
@@ -120,13 +131,18 @@ class ClassificationModel extends BaseModel {
         $ret = $this->field('cid, c_name, is_featured')
             ->where($where)
             ->select();
-        if(empty($ret)){
-            return $cid;
+
+        if($ret === false){
+            return;
         }
-        $tree = array($cid=>array());
+
+        if(!isset($ret) || empty($ret) || $ret === false){
+            return;
+        }
         foreach ($ret as $val){
-            $tree[$cid] = $this->getTreeClassification($val['cid']);
-            $tree[$cid]['cName'] = $val['c_name'];
+            $tree[$val['cid']]['cName'] = $val['c_name'];
+            $tree[$val['cid']]['is_featured'] = $val['is_featured'];
+            $tree[$val['cid']]['child'] = $this->getTreeClassification($val['cid']);
         }
         return $tree;
     }
@@ -165,36 +181,35 @@ class ClassificationModel extends BaseModel {
                 $update['is_show'] = 1;
                 $this->where($where)
                     ->save($update);
-                return retMessage('修改成功');
+                return array(true, '修改成功');
             case 'hide':
                 $update['is_show'] = 0;
                 $this->where($where)
                     ->save($update);
-                return retMessage('隐藏成功');
+                return array(true, '隐藏成功');
             case 'featured':
                 $update['is_featured'] = 1;
                 $this->where($where)
                     ->save($update);
-                return retMessage('加精成功');
+                return array(true, '加精成功');
             case 'cancelFeatured':
                 $update['is_featured'] = 0;
                 $this->where($where)
                     ->save($update);
-                return retMessage('取消加精成功');
+                return array(true, '取消加精成功');
             case 'recovery':
                 $where['is_delete'] = 1;
                 $update['is_delete'] = 0;
                 $this->where($where)
                     ->save($update);
-                return retMessage('恢复成功');
+                return array(true, '恢复成功');
             case 'move':
                 $update['parents_id'] = $get['parentId'];
                 $this->where($where)
                     ->save($update);
-                return retMessage('移动成功');
-            //TODO 在控制器判断是否有这个父版块,并对返回的字段筛选
+                return array(true, '移动成功');
             default :
-                return retErrorMessage('没有这种操作');
+                return array(false, '没有这种操作');
         }
     }
 }
