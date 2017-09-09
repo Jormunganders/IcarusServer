@@ -7,9 +7,7 @@ class ClassificationController extends UserController{
         $get = I('get.');
         $get['is_show'] = 1;
 
-        foreach ($get as $key => $val){
-            $this->is_empty($key, $val);
-        }
+        $this->is_empty('cid', $get['cid']);
         $ret = D('Classification')->getOneClassification($get);
 
         if($ret[0] === false){
@@ -22,9 +20,7 @@ class ClassificationController extends UserController{
         $get = I('get.');
         $get['is_show'] = 1;
 
-        foreach ($get as $key => $val){
-            $this->is_empty($key, $val);
-        }
+        $this->is_empty('cid', $get['cid']);
         $ret = D('Classification')->getTreeClassification($get['cid'], $get);
         $this->ajaxReturn(retMessage('', $ret), 'JSON');
     }

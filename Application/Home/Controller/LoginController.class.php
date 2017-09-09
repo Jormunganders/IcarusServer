@@ -28,6 +28,8 @@ class LoginController extends PubController
             $this->ajaxReturn($ret, 'JSON');
         }
 
+        $this->checkTheFormat('username', $post['username'], '%[a-zA-z]%i');
+
         if (check_verify($post['verify'])) {
 
             if (empty($data)) {
@@ -51,8 +53,8 @@ class LoginController extends PubController
                 $inert['last_login_ip'] = get_client_ip();
                 $inert['login_times'] = $data['login_times'] + 1;
                 $model->where($where)->save($inert);
-                $expire = 60*60*3;
-                /*ini_set('session.gc_maxlifetime',  $expire);
+                /*$expire = 60*60*3;
+                ini_set('session.gc_maxlifetime',  $expire);
                 ini_set('session.cookie_lifetime',  $expire);
                 session_start();
                 $_SESSION['user'] = 'is_login';

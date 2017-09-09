@@ -203,9 +203,48 @@ class PostsModel extends Model{
             ->alias('p')
             ->join("icarus_posts_classification pc ON p.posts_id=pc.posts_id")
             ->where($where)
+            ->page($get['page'] . ',' . $get['row'])
             ->order('posts_id')
             ->select();
+        //TODO 加上page row 还有i加上获取各类帖子总数的功能
         return retMessage('', $ret);
+    }
+
+    public function getPostsCount($action, $is_show = ''){
+        if(!empty($is_show)){
+            $where['is_show'] = $is_show;
+        }
+        $where['is_delete'] = 0;
+        switch ($action){
+            case 'top':
+                $where['is_top'] = 1;
+                $ret = $this
+                    ->where($where)
+                    ->count('posts_id');
+                return array(true, '', $ret);
+            case 'recommend':
+                $where['is_featured'] = 1;
+                $ret = $this
+                    ->where($where)
+                    ->count('posts_id');
+                return array(true, '', $ret);
+            case 'delete':
+                $where['is_delete'] = 1;
+                $ret = $this
+                    ->where($where)
+                    ->count('posts_id');
+                return array(true, '', $ret);
+            case 'general' :
+                $ret = $this
+                    ->where($where)
+                    ->count('posts_id');
+                return array(true, '', $ret);
+            default :
+                $ret = $this
+                    ->where($where)
+                    ->count('posts_id');
+                return array(true, '', $ret);
+        }
     }
 
     public function getOnePosts($get){

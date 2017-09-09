@@ -2,9 +2,9 @@
 
 namespace Home\Controller;
 
-use Think\Controller;
+use Common\Controller\PubController;
 
-class SignController extends Controller
+class SignController extends PubController
 {
     public function sign()
     {
@@ -21,6 +21,10 @@ class SignController extends Controller
                 $ret = retErrorMessage('邮箱不能为空');
                 $this->ajaxReturn($ret, 'JSON');
             }
+            $this->is_str_len_long('username', $post['username'], 20);
+            $this->is_str_len_long('email', $post['email'], 85);
+            $this->checkTheFormat('email', $post['email'], '%[\w!#$%&\'*+/=?^_`{|}~-]+(?:\.[\w!#$%&\'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?%i');
+            $this->checkTheFormat('username', $post['username'], '%[a-zA-z]%i');
             $user = $model->where($where)->find();
             $wh['email'] = $post['email'];
             $email = $model->where($wh)->find();

@@ -198,6 +198,8 @@
         * get提交
         * url: Home/Posts/getClassificationPosts
         * 需要的字段
+            * page 第几页
+            * row 第几行
             * cid 分类id
             
     * 获取某个帖子信息
@@ -206,3 +208,160 @@
         *需要的字段
             * postsId 帖子id
             
+    * 获取某种帖子的总数
+        * get提交
+        * url: Home/Posts/getPostsCount
+        * 需要的字段
+            * action 其值有
+                * top 获取置顶帖子总数
+                * recommend 获取推荐帖子总数
+                * general 不分类型的获取帖子数量
+            
+# 后台操作
+1. 登录操作
+    * 做了登录状态记录， 在一定时间内同一浏览器不能重复登录
+    * 想要重新登录，就post提交访问Admin/Login/logout，这是退出登录的url
+    * 退出后就能再次登录别的帐号了
+    
+2. 帖子操作
+    * 删除帖子
+        * get提交
+        * url: Admin/Posts/deletePosts
+        * 需要的字段
+            * postsId 帖子id
+            
+    * 对帖子的操作
+        * get提交
+        * url: Admin/Posts/actionPosts
+        * 需要的字段
+            * postsId 帖子id
+            * action 对帖子进行的操作2，其值有
+                * sticky 置顶
+                * hide 隐藏
+                * recommend 推荐
+                * cancelSticky 取消置顶
+                * show 显示帖子
+                * cancelRecommend 取消推荐
+                * recovery 恢复删除的帖子，在回收站里的操作
+                
+    * 对帖子进行所在版块进行移动
+        * post提交
+        * url: Admin/Posts/movePosts
+        * 需要的字段
+            * cid 分类id
+            * postsId 帖子id
+            
+    * 获取置顶帖子列表
+        * get提交
+        * url:Admin/Posts/getTopPostsList
+        * 需要的字段
+            * page 第几页
+            * row 一页几行
+            
+    * 获取推荐帖子列表
+        * get提交
+        * url: Admin/Posts/getRecommendPostsList
+        * 需要的字段
+            * page 第几页
+            * row 一页几行
+            
+    * 获取帖子的列表
+        * get提交
+        * url: Admin/Posts/getPostsList
+        * 需要的字段
+            * page 第几页
+            * row 一页几行
+            
+    * 获取已删除的帖子列表（回收站，防误删）
+        * get提交
+        * url: Admin/Posts/getDeletePosts
+        * 需要的字段
+            * page 第几页
+            * row 一页几行
+            
+    * 搜索帖子
+        * 还没写好 。。。
+        
+    * 获取某个分类下的帖子
+        * get提交
+        * url: Admin/Posts/getClassificationPosts
+        * 需要的字段
+            * page 第几页
+            * row 一页几行
+            * cid 分类id
+            
+    * 获取某个帖子信息
+        * get提交
+        * url: Admin/Posts/getOnePosts
+            * postsId 帖子id
+            
+    * 获取某种帖子的总数
+        * get提交
+        * url: Admin/Posts/getPostsCount
+        * 需要的字段
+             * action 其值有
+                  * top 获取置顶帖子总数
+                  * recommend 获取推荐帖子总数
+                  * delete 获取删除的帖子的总数
+                  * general 不分类型的获取帖子数量
+                    
+3. 分类操作
+    * 添加分类
+        * post提交
+        * url: Admin/Classification/addClassification
+        * 需要的字段
+            * parentId 如果没有父版块，就为0
+            * cName 版块名称
+            * is_featured 是否加精
+            
+    * 删除分类
+        * get提交
+        * url: Admin/Classification/deleteClassification
+        * 需要的字段
+            * cid 分类的字段
+            
+    * 编辑分类
+        * post提交
+        * url: Admin/Classification/editClassification
+        * 需要的字段
+            * cid 分类的字段
+            * cName 分类名字
+            
+    * 获取某个分类的信息
+        * get提交
+        * url: Admin/Classification/getOneClassification
+        * 需要的字段
+            * cid 分类的id
+            
+    * 获取某个分类的树形结构
+        * get提交
+        * url: Admin/Classification/getTreeClassification
+        * 需要的字段
+            * cid 分类id
+            
+    * 获取所有的父分类
+        * get提交
+        * url: Admin/Classification/getParentClassification
+        * 需要的字段
+            * 无
+            
+    * 获取删除了的分类
+        * get操作
+        * url: Admin/Classification/getDeleteClassification
+        * 需要的字段
+            * 无
+            
+    * 对分类的操作
+        * get操作
+        * url: Admin/Classification/actionClassification
+        * 需要的字段
+            * cid 分类id
+            * action 要对分类进行的操作， 其值有
+                * show 显示分类
+                * hide 隐藏
+                * featured 加精
+                * cancelFeatured 取消加精
+                * recovery 恢复删除的帖子
+                * move对分类进行移动，比如将a分类移到b分类下，这还需要一个字段
+                    * parentId 要移到的版块的id
+  

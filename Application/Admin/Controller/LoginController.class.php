@@ -13,6 +13,7 @@ class LoginController extends PubController
         }
         $post = I('post.');
         $model = D('user');
+        $this->checkTheFormat('username', $post['username'], '%[a-zA-z]%i');
         if (check_verify($post['verify'])) {
             $where['username'] = $post['username'];
             $data = $model->where($where)->find();

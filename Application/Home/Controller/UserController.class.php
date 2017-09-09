@@ -18,6 +18,8 @@ class UserController extends Controller{
         if(empty($post['nick'])){
             return retErrorMessage('昵称不能为空');
         }
+        $this->checkTheFormat('email', $post['email'], '%[\w!#$%&\'*+/=?^_`{|}~-]+(?:\.[\w!#$%&\'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?%i');
+        $this->checkTheFormat('username', $post['username'], '%[a-zA-z]%i');
         $model = D("User");
         $ret = $model->editUserData($post);
         $this->ajaxReturn($ret, 'JSON');
