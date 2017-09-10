@@ -5,13 +5,13 @@
     <title>密码找回</title>
 </head>
 <body>
-
 <form action="{:U('Home/User/modifyPasswd')}" method="post">
     <input type="hidden" name="username" value="{$username}"  disabled/>
     <input type="hidden" name="token" value="{$token}"  disabled/>
-    <input type="password" name="old_passwd"/>
-    <input type="password" name="passwd" />
-    <input type="password" name="repasswd" />
+    <input type="hidden" name="user_token" value="{$user_token}"  disabled/>
+    旧密码:<input type="password" name="old_passwd"/><br/>
+    新密码:<input type="password" name="passwd" /><br/>
+    确认密码:<input type="password" name="repasswd" /><br/>
     <input type="submit" name="提交" />
 </form>
 </body>

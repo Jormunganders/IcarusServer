@@ -93,6 +93,7 @@ EOL;
 
         $this->assign('username', $username);
         $this->assign('token', $get['token']);
+        $this->assign('user_token', $get['username']);
         $this->display();
     }
 
@@ -113,7 +114,8 @@ EOL;
         if($post['passwd'] != $post['repasswd']){
             $this->ajaxReturn(retErrorMessage('密码确认不正确'), 'JSON');
         }
-        //TODO 注销redis存储的口令
+        $redis->set($post['user_token'], time().mt_rand(1,100));
+
         $ret = D('User')->editPasswd($post);
         $redis->close();
         $this->ajaxReturn($ret, 'JSON');
