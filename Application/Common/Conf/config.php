@@ -12,10 +12,10 @@ return array(
     //'SESSION_OPTIONS'       =>  array('path' => '/tmp/session')
     //'SESSION_TYPE'          =>  'Mysqli'
 //**********************************邮件相关信息*******************************
-    'EMAIL_FROM_NAME'        => 'Icarus',   // 发件人
-    'EMAIL_SMTP'             => 'smtp.qq.com',   // smtp
-    'EMAIL_USERNAME'         => '1490015807@qq.com',   // 账号
-    'EMAIL_PASSWORD'         => 'xqfencsbzmopiaae',   // 密码  注意: 163和QQ邮箱是授权码；不是登录的密码
-    'EMAIL_SMTP_SECURE'      => 'ssl',   // 链接方式 如果使用QQ邮箱；需要把此项改为  ssl
-    'EMAIL_PORT'             => '465',
+    'EMAIL_FROM_NAME'        => '',   // 发件人
+    'EMAIL_SMTP'             => '',   // smtp
+    'EMAIL_USERNAME'         => '',   // 账号
+    'EMAIL_PASSWORD'         => '',   // 密码  注意: 163和QQ邮箱是授权码；不是登录的密码
+    'EMAIL_SMTP_SECURE'      => '',   // 链接方式 如果使用QQ邮箱；需要把此项改为  ssl
+    'EMAIL_PORT'             => '',
 );
