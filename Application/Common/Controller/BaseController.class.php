@@ -12,7 +12,10 @@ class BaseController extends Controller{
         }
     }
 
-    protected function is_str_len_long($name, $value, $length){
+    protected function is_str_len_long($name, $value, $length, $is_ch = ''){
+        if(!empty($is_ch)){
+            $length = floor($length/4);
+        }
         if(strlen($value) > $length){
             $this->ajaxReturn(retErrorMessage("{$name}长度应在0~{$length}字以内"), 'JSON');
         }

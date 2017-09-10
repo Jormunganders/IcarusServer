@@ -9,6 +9,8 @@ class ClassificationController extends AdminController{
        $this->is_empty('parentId', $post['parentId']);
        $this->is_empty('cName', $post['cName']);
        $this->is_empty('is_featured', $post['is_featured']);
+       $this->is_str_len_long('cName', $post['cName'], 255, '1');
+
        $ret = D('Classification')->addClassification($post);
        if($ret[0] === false){
            $this->ajaxReturn(retErrorMessage($ret[1]), 'JSON');
@@ -32,6 +34,8 @@ class ClassificationController extends AdminController{
 
        $this->is_empty('cid', $post['cid']);
        $this->is_empty('cName', $post['cName']);
+       $this->is_str_len_long('cName', $post['cName'], 255, '1');
+
        $ret = D('Classification')->editClassification($post);
        if($ret[0] === false){
            $this->ajaxReturn(retErrorMessage($ret[1]), 'JSON');

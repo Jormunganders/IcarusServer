@@ -6,14 +6,17 @@ class PostsController extends UserController{
     public function publishPosts(){
         $post = I('post.');
 
+        $this->is_login();
+        $this->isOnePeople($post['username']);
         $this->is_empty('username', $post['username']);
         $this->is_empty('cid', $post['cid']);
         $this->is_empty('title', $post['title']);
         $this->is_empty('content', $post['content']);
         $this->is_empty('keywords', $post['keywords']);
+        $this->is_str_len_long('title', $post['title'], 255, '1');
+        $this->is_str_len_long('keywords', $post['keywords'], 255, '1');
+
         $model = M('User');
-        $this->is_login();
-        $this->isOnePeople($post['username']);
         $ret = $model
             ->field('uid')
             ->where(array('username' => $post['username']))
@@ -29,9 +32,6 @@ class PostsController extends UserController{
     public function deletePosts(){
         $get = I('get.');
 
-        $this->is_empty('username', $get['username']);
-        $this->is_empty('cid', $get['cid']);
-        $this->is_empty('postsId', $get['postsId']);
         $this->is_login();
         $this->isOnePeople($get['username']);
         if(!$this->isOwn($get)){
@@ -40,6 +40,10 @@ class PostsController extends UserController{
         if(!$this->isAuthority($get['cid'])){
             $this->ajaxReturn(retErrorMessage('没有权限'), 'JSON');
         }
+        $this->is_empty('username', $get['username']);
+        $this->is_empty('cid', $get['cid']);
+        $this->is_empty('postsId', $get['postsId']);
+
         $ret = D('Posts')->deletePosts($get);
         $this->ajaxReturn($ret, 'JSON');
     }
@@ -47,16 +51,19 @@ class PostsController extends UserController{
     public function editPosts(){
         $post = I('post.');
 
-        $this->is_empty('username', $post['username']);
-        $this->is_empty('postsId', $post['postsId']);
-        $this->is_empty('title', $post['title']);
-        $this->is_empty('content', $post['content']);
-        $this->is_empty('keywords', $post['keywords']);
         $this->is_login();
         $this->isOnePeople($post['username']);
         if(!$this->isOwn($post)){
             $this->ajaxReturn(retErrorMessage('没有权限'), 'JSON');
         }
+        $this->is_empty('username', $post['username']);
+        $this->is_empty('postsId', $post['postsId']);
+        $this->is_empty('title', $post['title']);
+        $this->is_empty('content', $post['content']);
+        $this->is_empty('keywords', $post['keywords']);
+        $this->is_str_len_long('title', $post['title'], 255, '1');
+        $this->is_str_len_long('keywords', $post['keywords'], 255, '1');
+
         $ret = D('Posts')->editPosts($post);
         $this->ajaxReturn($ret, 'JSON');
     }
@@ -64,15 +71,15 @@ class PostsController extends UserController{
     public function actionPosts(){
         $get = I('get.');
 
-        $this->is_empty('username', $get['username']);
-        $this->is_empty('cid', $get['cid']);
-        $this->is_empty('postsId', $get['postsId']);
-        $this->is_empty('action', $get['action']);
         $this->is_login();
         $this->isOnePeople($get['username']);
         if(!$this->isAuthority($get['cid'])){
             $this->ajaxReturn(retErrorMessage('没有权限'), 'JSON');
         }
+        $this->is_empty('username', $get['username']);
+        $this->is_empty('cid', $get['cid']);
+        $this->is_empty('postsId', $get['postsId']);
+        $this->is_empty('action', $get['action']);
 
         $get['is_show'] = 1;
 
@@ -83,14 +90,14 @@ class PostsController extends UserController{
     public function movePosts(){
         $post = I('post.');
 
-        $this->is_empty('username', $post['username']);
-        $this->is_empty('cid', $post['cid']);
-        $this->is_empty('postsId', $post['postsId']);
         $this->is_login();
         $this->isOnePeople($post['username']);
         if(!$this->isAuthority($post['cid'])){
             $this->ajaxReturn(retErrorMessage('没有权限'), 'JSON');
         }
+        $this->is_empty('username', $post['username']);
+        $this->is_empty('cid', $post['cid']);
+        $this->is_empty('postsId', $post['postsId']);
 
         $ret = D('Posts')->movePosts($post);
         $this->ajaxReturn($ret, 'JSON');

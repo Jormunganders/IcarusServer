@@ -8,6 +8,11 @@ class UserController extends AdminController
     public function editPasswd()
     {
         $post = I("post.");
+
+        $this->is_empty('passwd', $post['passwd']);
+        $this->is_empty('old_passwd', $post['old_passwd']);
+        $this->is_str_len_long('passwd', $post['passwd'], 255);
+
         $model = D('User');
         $ret = $model->editPasswd($post);
         $this->ajaxReturn($ret, 'JSON');
@@ -16,6 +21,7 @@ class UserController extends AdminController
     public function getOneUser()
     {
         $post = I("post.");
+
         $model = D('User');
         $ret = $model->getOneUser($post);
         $ret = retMessage('', array($ret));

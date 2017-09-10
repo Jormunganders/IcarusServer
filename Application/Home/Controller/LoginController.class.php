@@ -28,8 +28,6 @@ class LoginController extends PubController
             $this->ajaxReturn($ret, 'JSON');
         }
 
-        $this->checkTheFormat('username', $post['username'], '%[a-zA-z]%i');
-
         if (check_verify($post['verify'])) {
 
             if (empty($data)) {
@@ -66,6 +64,7 @@ class LoginController extends PubController
                 $redis = \Common\Model\RedisModel::getInstance();
                 $redis->set($post['username'], $token);
                 $redis->setTimeout($post['username'], 2592000);
+                $redis->close();
 
                 $ret = retMessage('登录成功', array('username' => $post['username'], 'token' => $token));
                 $this->ajaxReturn($ret, 'JSON');
@@ -98,6 +97,7 @@ class LoginController extends PubController
             $redis->delete(session('username'));
         }
         session(null);
+        $redis->close();
         $this->ajaxReturn(retMessage('退出登录成功'), 'JSON');
     }
 

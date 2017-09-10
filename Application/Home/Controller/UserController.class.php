@@ -18,8 +18,10 @@ class UserController extends Controller{
         if(empty($post['nick'])){
             return retErrorMessage('昵称不能为空');
         }
-        $this->checkTheFormat('email', $post['email'], '%[\w!#$%&\'*+/=?^_`{|}~-]+(?:\.[\w!#$%&\'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?%i');
-        $this->checkTheFormat('username', $post['username'], '%[a-zA-z]%i');
+        $this->is_str_len_long('email', $post['email'], 255);
+        $this->is_str_len_long('nick', $post['nick'], 30, '1');
+        $this->checkTheFormat('email', $post['email'], "%^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$%i");
+
         $model = D("User");
         $ret = $model->editUserData($post);
         $this->ajaxReturn($ret, 'JSON');
@@ -31,10 +33,13 @@ class UserController extends Controller{
 
         $this->is_login();
         $this->isOnePeople($post['username']);
+        $this->is_empty('passwd', $post['passwd']);
+        $this->is_empty('repasswd', $post['repasswd']);
 
         if($post['repasswd'] != $post['passwd']){
             $this->ajaxReturn(retErrorMessage('两次输入密码不一致'), 'JSON');
         }
+        $this->is_str_len_long('passwd', $post['passwd'], 255);
         $ret = D('User')
             ->editPasswd($post);
         $this->ajaxReturn($ret, 'JSON');
@@ -42,7 +47,80 @@ class UserController extends Controller{
 
     public function forgetPasswd()
     {
+        $post = I('post.');
 
+        if(!empty(session('user'))){
+            $this->ajaxReturn(retErrorMessage('您已登录，请先退出登录'), 'JSON');
+        }
+        $this->is_empty('username', $post['username']);
+        $this->is_empty('email', $post['email']);
+
+        $ret = D('User')->forgetPasswd($post);
+        if($ret[0] === true){
+            $content = <<<EOL
+Hi,{$post['username']}:
+<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;    忘记密码了么？别着急，请点击以下链接， 我们协助您找回密码：
+    <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;     {$ret['url']}
+    <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;     如果这不是本人操作，请忽略。
+EOL;
+            $address = $post['email'];
+            $subject = '找回Icarus密码';
+            $ret = send_email($address, $subject, $content);
+
+            if($ret['error'] !== 1){
+                $this->ajaxReturn(retErrorMessage('发送失败'), 'JSON');
+            }
+            $this->ajaxReturn(retMessage('发送成功,请注意查看邮件'), 'JSON');
+        }else{
+            $this->ajaxReturn(retErrorMessage($ret[1]), 'JSON');
+        }
+    }
+
+    public function getPasswd(){
+        $get = I('get.');
+        $redis = \Common\Model\RedisModel::getInstance();
+        $token = $redis->get($get['username']);
+        $username = $redis->get($token);
+        list($get['token'], $ext) = explode('.', $get['token']);
+
+        if(empty($username) || empty($token) || $get['token'] != $token){
+            http_response_code(404);
+            $this->redirect('User/pageNotFound', '',0, '404');
+        }
+
+        $this->assign('username', $username);
+        $this->assign('token', $get['token']);
+        $this->display();
+    }
+
+    public function modifyPasswd(){
+        $post = I('post.');
+        $redis = \Common\Model\RedisModel::getInstance();
+        $username = $redis->get($post['token']);
+
+        if(empty($username) || empty($post['token'] || $username != $post['username'])){
+            http_response_code(404);
+            $this->ajaxReturn(retErrorMessage('口令已过期，找回密码收到邮件后请尽快完成密码修改') ,' JSON');
+        }
+
+        $this->is_empty('old_passwd', $post['old_passwd']);
+        $this->is_empty('passwd', $post['passwd']);
+        $this->is_empty('repasswd', $post['repasswd']);
+
+        if($post['passwd'] != $post['repasswd']){
+            $this->ajaxReturn(retErrorMessage('密码确认不正确'), 'JSON');
+        }
+        //TODO 注销redis存储的口令
+        $ret = D('User')->editPasswd($post);
+        $redis->close();
+        $this->ajaxReturn($ret, 'JSON');
+    }
+
+    public function pageNotFound(){
+        $this->display();
     }
 
     public function getUserData(){

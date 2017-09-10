@@ -13,10 +13,11 @@ class UserModel extends Model
     public function editPasswd($data)
     {
         $where['username'] = $data['username'];
-        if(empty($this->where($where)->find())){
+        $ret = $this->where($where)->find();
+        if(empty($ret)){
             return retErrorMessage('没有此用户');
         }
-        $ret = $this->where($where)->find();
+
         if ($ret['passwd'] != md5($data['old_passwd'] . $ret['salt'])) {
             return retErrorMessage('原密码不正确');
         }
@@ -28,11 +29,28 @@ class UserModel extends Model
         }
     }
 
-    public function forgetPasswd()
+    public function forgetPasswd($post)
     {
+        $where['username'] = $post['username'];
+        $ret = $this->field('email')->where($where)->find();
+        if(empty($ret)){
+            return array(false, '没有此用户');
+        }
 
+        if($post['email'] != $ret['email']){
+            return array(false, '用户名或邮箱错误');
+        }
+
+        $rand = md5(time().get_client_ip().mt_rand(1, 1000));
+        $username = md5($post['username'].mt_rand(1,100));
+
+        $redis = \Common\Model\RedisModel::getInstance();
+        $redis->set($username, $rand);
+        $redis->set($rand, $post['username']);
+        $redis->setTimeout($username, 3600);
+
+        return array(true, 'url' => "http://localhost:8000/IcarusServer/index.php/Home/User/getPasswd/username/{$username}/token/{$rand}");
     }
-
 
     public function getOneUser($nick)
     {
@@ -52,7 +70,7 @@ class UserModel extends Model
     {
         $where['username'] = $post['username'];
         if (empty($post['username'])) {
-            return retErrorMessage('昵称不能为空');
+            return retErrorMessage('用户id不能为空');
         }
         if(empty($this->where($where)->find())){
             return retErrorMessage('没有此用户');
@@ -92,7 +110,7 @@ class UserModel extends Model
     public function addAdministrator($post)
     {
         if (empty($post['username'])) {
-            $ret = retErrorMessage('请填写用户名称');
+            $ret = retErrorMessage('请填写用户id');
             return $ret;
         }
         $where['username'] = $post['username'];
@@ -110,7 +128,7 @@ class UserModel extends Model
 
     public function sealUser($post){
         if(empty($post['username'])){
-            $ret = retErrorMessage('请填写昵称');
+            $ret = retErrorMessage('请填写用户id');
             return $ret;
         }
         $where['username'] = $post['username'];

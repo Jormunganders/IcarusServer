@@ -13,7 +13,8 @@ class LoginController extends PubController
         }
         $post = I('post.');
         $model = D('user');
-        $this->checkTheFormat('username', $post['username'], '%[a-zA-z]%i');
+        $this->is_empty('username', $post['username']);
+        $this->is_empty('passwd', $post['passwd']);
         if (check_verify($post['verify'])) {
             $where['username'] = $post['username'];
             $data = $model->where($where)->find();

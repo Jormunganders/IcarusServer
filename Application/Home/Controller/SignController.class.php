@@ -22,9 +22,10 @@ class SignController extends PubController
                 $this->ajaxReturn($ret, 'JSON');
             }
             $this->is_str_len_long('username', $post['username'], 20);
-            $this->is_str_len_long('email', $post['email'], 85);
-            $this->checkTheFormat('email', $post['email'], '%[\w!#$%&\'*+/=?^_`{|}~-]+(?:\.[\w!#$%&\'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?%i');
-            $this->checkTheFormat('username', $post['username'], '%[a-zA-z]%i');
+            $this->is_str_len_long('email', $post['email'], 255);
+            $this->checkTheFormat('email', $post['email'], "%^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$%i");
+            $this->checkTheFormat('username', $post['username'], "%[a-zA-z]%i");
+
             $user = $model->where($where)->find();
             $wh['email'] = $post['email'];
             $email = $model->where($wh)->find();
