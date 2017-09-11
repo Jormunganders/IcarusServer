@@ -5,7 +5,7 @@ class ReplyModel extends BaseModel{
 
     public function addReply($post){
         $insert['uid'] = $post['uid'];
-        $insert['parent_id'] = $post['parentId'];
+        $insert['parents_id'] = $post['parentId'];
         $insert['posts_id'] = $post['postsId'];
         $insert['content'] = $post['content'];
         $insert['is_show'] = 1;
@@ -46,18 +46,19 @@ class ReplyModel extends BaseModel{
             $rid[$key] = $val['rid'];
             $parents_id[$key] = $val['parents_id'];
         }
+        $r_p = array_combine($rid, $parents_id);
         $already_handler = array();
         foreach ($all as $key => $val){
-            if($val['parents_id'] != 0) {
-                if ($val['rid'] < $delete[0]['rid'] || $val['parents_id'] < $delete[0]['rid']) {
-                    $already_handler[$val['parents_id']]['child'] = $val;
-                } else {
-
-                }
+            if(!in_array($val['parents_id'], $rid)){
+                $already_handler[$val['rid']] = $val;
+                $already_handler[$val['rid']]['parents_id'] = $already_handler[$val['parents_id']];
             }else{
-                $already_handler[$val['rid']] =  $val;
+                $already_handler[$val['rid']] = $val;
+                $already_handler[$val['parents_id']] = array('is_delete'=>1, 'parents_id'=>$already_handler[$r_p[$val['parents_id']]]);
+                $already_handler[$val['rid']]['parents_id'] = array('is_delete'=>1, 'parents_id'=>$already_handler[$r_p[$val['parents_id']]]);
             }
         }
+        return array(true, '', $already_handler);
     }
 
     public function deleteReply($get){
@@ -76,7 +77,7 @@ class ReplyModel extends BaseModel{
         $where['is_delete'] = 0;
 
         $ret = $this
-            ->field('rid, parents_id, posts_id, content, reply_time')
+            ->field('rid, parents_id, posts_id, content, reply_time, approve_amount')
             ->where($where)
             ->find();
         if($ret !== false){

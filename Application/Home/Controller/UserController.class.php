@@ -125,7 +125,53 @@ EOL;
         $this->display();
     }
 
-    public function getUserData(){
+    public function getUserPosts(){
+        $get = I('get.');
+        $this->is_login();
 
+        $posts = M('Posts')
+            ->alias('p')
+            ->field('p.posts_id, p.title, p.add_time, p.content')
+            ->join('icarus_user u ON p.uid=u.uid')
+            ->where(array('u.username'=>$get['username']))
+            ->page($get['page'] . ',' . $get['row'])
+            ->order('p.posts_id DESC')
+            ->select();
+
+        foreach ($posts as $key => $val){
+            if(strlen($val['content']) >= 270){
+                $val['content'] = substr($val['content'], 0, 270);
+                $val['content'] = $val['content'] . "...";
+            }
+        }
+
+        $this->ajaxReturn(retMessage('', $posts), 'JSON');
+    }
+
+    public function getUserReply(){
+       $get = I('get.');
+       $this->is_login();
+
+       $uid = M('User')
+           ->field('uid')
+           ->where(array('username'=>$get['username']))
+           ->find();
+
+       $reply = M('Reply')
+           ->alias('r')
+           ->field('r.rid, r.content, r.reply_time, p.posts_id, p.title')
+           ->where(array('uid' => $uid['uid']))
+           ->page($get['page'] . ',' . $get['row'])
+           ->order('rid DESC')
+           ->select();
+
+       foreach ($reply as $key => $val){
+           if(strlen($val['content']) > 270){
+               $val['content'] = substr($val['content'], 0, 270);
+               $val['content'] = $val['content'] . '...';
+           }
+       }
+
+       $this->ajaxReturn(retMessage('', $reply), 'JSON');
     }
 }

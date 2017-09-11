@@ -35,10 +35,9 @@ class PostsController extends UserController{
         $this->is_login();
         $this->isOnePeople($get['username']);
         if(!$this->isOwn($get)){
-            $this->ajaxReturn(retErrorMessage('没有权限'), 'JSON');
-        }
-        if(!$this->isAuthority($get['cid'])){
-            $this->ajaxReturn(retErrorMessage('没有权限'), 'JSON');
+            if(!$this->isAuthority($get['cid'])){
+                $this->ajaxReturn(retErrorMessage('没有权限'), 'JSON');
+            }
         }
         $this->is_empty('username', $get['username']);
         $this->is_empty('cid', $get['cid']);

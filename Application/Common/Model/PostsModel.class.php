@@ -206,7 +206,6 @@ class PostsModel extends Model{
             ->page($get['page'] . ',' . $get['row'])
             ->order('posts_id')
             ->select();
-        //TODO 加上page row 还有i加上获取各类帖子总数的功能
         return retMessage('', $ret);
     }
 
