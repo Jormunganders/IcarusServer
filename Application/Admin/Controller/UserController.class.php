@@ -33,7 +33,7 @@ class UserController extends AdminController
         $model = D('User');
         $data = I('get.');
         $ret = $model->getUserlist($data['page'], $data['row']);
-        $ret = retMessage('', array($ret));
+        $ret = retMessage('', $ret);
         $this->ajaxReturn($ret, 'JSON');
     }
 
@@ -58,5 +58,11 @@ class UserController extends AdminController
         $model = D("User");
         $ret = $model->sealUser($post);
         $this->ajaxReturn($ret, 'JSON');
+    }
+
+    public function getUserCount(){
+        $ret = M('User')
+            ->count('uid');
+        $this->ajaxReturn(retMessage('获取成功', array('count'=>$ret)), 'JSON');
     }
 }
