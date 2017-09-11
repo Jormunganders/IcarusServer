@@ -29,8 +29,6 @@ class PostsModel extends Model{
         }else{
             return retErrorMessage('发帖失败了！');
         }
-        //TODO 将里面的图片链接取出
-        //TODO 还要用monggodb加入个人所发帖
     }
 
     public function deletePosts($post){
@@ -137,7 +135,6 @@ class PostsModel extends Model{
         if(!empty($is_show)){
             $where['is_show'] = $is_show;
         }
-        //TODO 限制返回字段，不要返回uid
         $ret = $this
             ->field('posts_id, title, author, content, keywords, is_top, is_end, is_featured, add_time, click')
             ->where($where)

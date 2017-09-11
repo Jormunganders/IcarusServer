@@ -127,7 +127,10 @@ EOL;
 
     public function getUserPosts(){
         $get = I('get.');
-        $this->is_login();
+
+        $this->is_empty('username', $get['username']);
+        $this->is_empty('page', $get['page']);
+        $this->is_empty('row', $get['row']);
 
         $posts = M('Posts')
             ->alias('p')
@@ -150,7 +153,9 @@ EOL;
 
     public function getUserReply(){
        $get = I('get.');
-       $this->is_login();
+       $this->is_empty('username', $get['username']);
+       $this->is_empty('page', $get['page']);
+       $this->is_empty('row', $get['row']);
 
        $uid = M('User')
            ->field('uid')
@@ -160,9 +165,10 @@ EOL;
        $reply = M('Reply')
            ->alias('r')
            ->field('r.rid, r.content, r.reply_time, p.posts_id, p.title')
-           ->where(array('uid' => $uid['uid']))
+           ->join('icarus_posts p ON r.posts_id=p.posts_id')
+           ->where(array('r.uid' => $uid['uid']))
            ->page($get['page'] . ',' . $get['row'])
-           ->order('rid DESC')
+           ->order('r.rid DESC')
            ->select();
 
        foreach ($reply as $key => $val){

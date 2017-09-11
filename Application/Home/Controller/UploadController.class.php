@@ -7,7 +7,7 @@ class UploadController extends UserController{
         $this->is_login();
         $config = array(
             'maxSize'    =>    3145728,
-            'rootPath'   =>    __ROOT__ . '/Uploads/',
+            'rootPath'   =>    './Uploads/',
             'savePath'   =>    '',
             'saveName'   =>    array('uniqid',''),
             'exts'       =>    array('jpg', 'gif', 'png', 'jpeg'),
@@ -15,11 +15,11 @@ class UploadController extends UserController{
             'subName'    =>    array('date','Ymd'),
         );
         $upload = new \Think\Upload($config);
-        $info   =   $upload->upload();
+        $info = $upload->upload();
         if(!$info) {
-            $this->ajaxReturn(retMessage($upload->getError()), 'JSON');
+            $this->ajaxReturn(retErrorMessage($upload->getError()), 'JSON');
         }else{
-            $this->ajaxReturn(retMessage('', array('path' => $info['image']['savepath'])), 'JSON');
+            $this->ajaxReturn(retMessage('', array('url' => 'http://localhost:8000/IcarusServer/Uploads/'.$info['image']['savepath'].$info['image']['savename'])), 'JSON');
         }
     }
 }

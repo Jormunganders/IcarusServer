@@ -365,3 +365,72 @@
                 * move对分类进行移动，比如将a分类移到b分类下，这还需要一个字段
                     * parentId 要移到的版块的id
   
+# 9月十一日增加的接口
+1. 前台接口
+    * 忘记密码
+        * post提交
+        * url: Home/User/forgetPasswd
+        * 需要的字段
+            * username 用户id
+            * email 邮箱
+            
+    * 获取用户已发布的帖子
+        * get提交
+        * url: Home/User/getUserPosts
+        * 需要的字段
+            * username 用户id
+            * page 第几页
+            * row 一页几行
+            
+    * 获取用户自己的评论
+        * get提交
+        * url: Home/User/getUserReply
+        * 需要的字段
+            * username 用户id
+            * page 第几页
+            * row 一页几行
+            
+    * 用户对一个帖子发布评论
+        * post操作
+        * url: Home/Reply/addReply
+        * 需要的字段
+            * username
+            * parentId 没有父级评论，就为0
+            * postsId 帖子的id
+            * content 评论的内容
+            
+    * 获取某个帖子下的所有评论
+        * get操作
+        * url: Home/Reply/getAllReply
+        * 需要的字段
+            * postsId 帖子id
+            * page 第几页
+            * row 一页几行
+            
+    * 删除某个回复
+        * get操作
+        * url: Home/Reply/deleteReply
+        * 需要的字段
+            * rid 评论的id
+            * username 当前登录的用户id
+            * cid 分类id
+            
+    * 获取某评论的信息（用作修改评论用）
+        * get操作
+        * url: Home/Reply/getOneReply
+        * 需要的字段
+            * rid 评论的id
+            
+    * 修改评论
+        * get操作
+        * url: Home/Reply/editReply
+        * 需要的段
+            * rid 评论id
+            * cid 分类id
+            * content 修改的内容
+    
+    * 给评论点赞
+        * get操作
+        * url: Home/Reply/approve
+        * 需要的字段
+            * rid 评论id
