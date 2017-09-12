@@ -80,16 +80,6 @@ CREATE TABLE icarus_report(
   username VARCHAR (20) NOT NULL DEFAULT '' COMMENT '用户id'
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE icarus_reply_report(
-  rid INT(10) unsigned NOT NULL DEFAULT '0' COMMENT '评论id',
-  username VARCHAR (20) NOT NULL DEFAULT '' COMMENT '用户id'
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE icarus_posts_report(
-  posts_id INT(10) unsigned NOT NULL DEFAULT '0' COMMENT '帖子id',
-  username VARCHAR (20) NOT NULL DEFAULT '' COMMENT '用户id'
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 ALTER TABLE icarus_posts ADD INDEX index_uid (uid);
 ALTER TABLE icarus_posts_classification ADD INDEX index_p_c_id(posts_id, cid);
 ALTER TABLE icarus_posts_image ADD INDEX index_posts_id(posts_id);

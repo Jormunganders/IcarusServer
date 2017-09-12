@@ -175,7 +175,9 @@ class PostsModel extends Model{
 
     public function searchPostsByKeywords($post){
         //TODO 没有用
-        $sql = "SELECT *, 
+        $sql = "SELECT *, MATCH (keywords) AGAINST('开发') as keywords_score, MATCH (title) AGAINST('开发') as title_score, IF(MATCH (keywords) AGAINST('开发') > 0 AND MATCH (title) AGAINST('开发') > 0,1,0) as score1 FROM icarus_posts WHERE MATCH(title, keywords) AGAINST('开发' IN BOOLEAN MODE) AND is_delete = 0 AND is_show = 1 ORDER BY posts_id DESC, score1 DESC, keywords_score DESC, title_score DESC;
+        SELECT *, MATCH (keywords) AGAINST('php开发') as keywords_score, IF(MATCH (keywords) AGAINST('php开发') > 0,1,0) as score1 FROM icarus_posts WHERE MATCH(keywords) AGAINST('php开发' IN BOOLEAN MODE) AND is_delete = 0 AND is_show = 1 ORDER BY posts_id DESC, score1 DESC, keywords_score DESC
+                SELECT *, 
                 MATCH (keywords) AGAINST({$post['keywords']}) as keywords_score,
                 MATCH (title) AGAINST({$post['keywords']}) as title_score,
                 IF(MATCH (keywords) AGAINST({$post['keywords']}) > 0 

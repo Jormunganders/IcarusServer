@@ -49,12 +49,13 @@
         * post提交
 	    * url：http://115.159.56.141/index.php/Admin/User/addModerator
 	    * 需要输入的字段
-		    * username：id
+		    * username：用户id
+		    * cid： 分类id
     * 给用户管理员权限
         * post提交
 	    * url：http://115.159.56.141/index.php/Admin/User/editUserData
 	    * 需要输入的字段
-		    * username：id
+		    * username：用户id
     * 封号
         * post提交
 	    * url：http://115.159.56.141/index.php/Admin/User/sealUser
