@@ -72,7 +72,8 @@ class UserModel extends Model
         if (empty($post['username'])) {
             return retErrorMessage('用户id不能为空');
         }
-        if(empty($this->where($where)->find())){
+        $ret = $this->field('uid, is_admin')->where($where)->find();
+        if(empty($ret) || $ret['is_admin'] == 3){
             return retErrorMessage('没有此用户');
         }
         $data['is_admin'] = 1;
@@ -115,12 +116,6 @@ class UserModel extends Model
         }
         $where['username'] = $post['username'];
         $ret = $this->where($where)->find();
-        if($ret['is_admin'] != 3){
-            return retErrorMessage('没有权限');
-        }
-        if(empty($ret)){
-            return retErrorMessage('没有此用户');
-        }
         $data['is_admin'] = 2;
         if ($this->where($where)->save($data) !== false) {
             $ret = retMessage('添加成功');
