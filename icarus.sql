@@ -1,5 +1,5 @@
 DROP DATABASE IF EXISTS `icarus`;
-CREATE DATABASE `icarus` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;;
+CREATE DATABASE `icarus` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE icarus;
 
 CREATE TABLE `icarus_user`(
@@ -16,7 +16,8 @@ CREATE TABLE `icarus_user`(
   email VARCHAR (255) NOT NULL DEFAULT '' COMMENT '用户邮箱',
   is_admin tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '用户是否为管理员,0为普通用户,1为版主,2为超级用户,',
   is_seal tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否被封',
-  salt VARCHAR (255) NOT NULL DEFAULT '' COMMENT '盐'
+  salt VARCHAR (255) NOT NULL DEFAULT '' COMMENT '盐',
+  cid int(10) UNSIGNED NOT NULL DEFAULT '0' COMMENT '版主所属版块id'
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `icarus_posts`(
@@ -79,9 +80,9 @@ ALTER TABLE icarus_posts_image ADD INDEX index_posts_id(posts_id);
 ALTER TABLE icarus_reply_image ADD INDEX index_rid(rid);
 ALTER TABLE icarus_posts ADD FULLTEXT index_keywords(keywords);
 ALTER TABLE icarus_posts ADD FULLTEXT index_title(title);
-ALTER TABLE icarus_user ADD UNIQUE index_username(username);
 
-
+ALTER TABLE icarus_user ADD index index_name(username);
+alter table icarus_classification add index index_c_name(c_name);
 
 
 

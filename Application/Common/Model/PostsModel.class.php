@@ -193,6 +193,7 @@ class PostsModel extends Model{
         if(empty($ret))
             return retErrorMessage('没有此版块');
         $where['p.is_delete'] = 0;
+        $where['pc.cid'] = $get['cid'];
         if(!empty($is_show)){
             $where['p.is_show'] = $is_show;
         }
@@ -201,7 +202,7 @@ class PostsModel extends Model{
             ->join("icarus_posts_classification pc ON p.posts_id=pc.posts_id")
             ->where($where)
             ->page($get['page'] . ',' . $get['row'])
-            ->order('posts_id')
+            ->order('posts_id desc')
             ->select();
         return retMessage('', $ret);
     }
