@@ -53,7 +53,7 @@
 		    * cid： 分类id
     * 给用户管理员权限
         * post提交
-	    * url：http://115.159.56.141/index.php/Admin/User/editUserData
+	    * url：http://115.159.56.141/index.php/Admin/User/addAdministrator
 	    * 需要输入的字段
 		    * username：用户id
     * 封号
