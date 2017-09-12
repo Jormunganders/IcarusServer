@@ -65,4 +65,32 @@ class UserController extends AdminController
             ->count('uid');
         $this->ajaxReturn(retMessage('获取成功', array('count'=>$ret)), 'JSON');
     }
+
+    public function cancelSeal(){
+        $get = I('get.');
+
+        $ret = M('User')
+            ->where(array('username'=>$get['username']))
+            ->save(array('is_seal'=>0));
+        if($ret !== false){
+            $this->ajaxReturn(retMessage('解封成功'), 'JSON');
+        }
+        $this->ajaxReturn(retErrorMessage('解封失败，请重试'), 'JSON');
+    }
+
+    public function getReportReply(){
+        $ret = M('Report')
+            ->field('username, rid')
+            ->where("rid <> ''")
+            ->select();
+        $this->ajaxReturn(retMessage('', $ret), 'JSON');
+    }
+
+    public function getReportPosts(){
+        $ret = M('Report')
+            ->field('username, posts_id')
+            ->where("posts_id <> ''")
+            ->select();
+        $this->ajaxReturn(retMessage('', $ret), 'JSON');
+    }
 }

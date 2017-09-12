@@ -442,3 +442,38 @@
         * url: Home/Reply/approve
         * 需要的字段
             * rid 评论id
+            
+# 新增功能
+1. 前台操作
+    * 举报帖子
+        * get操作
+        * url: Home/Report/reportPosts
+        * 需要字段
+            * username 用户id
+            * posts_id 帖子id
+            
+    * 举报回复
+        * get操作
+        * url: Home/Report/reportReply
+        * 需要的字段
+            * username 用户id
+            * rid 评论id
+            
+2. 后台操作
+    * 解封
+        * get提交
+        * url: Admin/User/cancelSeal
+        * 需要的字段
+            * username
+            
+    * 获取被举报的帖子
+        * get提交
+        * url: Admin/User/getReportPosts
+        * 需要的字段
+            * 无
+            
+    * 获取被举报的评论
+        * get提交
+        * url: Admin/User/getReportReply
+        * 需要的字段
+            * 无
