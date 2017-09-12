@@ -3,6 +3,16 @@ namespace Home\Controller;
 use Common\Controller\UserController as Controller;
 
 class UserController extends Controller{
+    public function getOneUser(){
+        $get = I('get.');
+
+        $this->is_login();
+        $this->isOnePeople($get['username']);
+
+        $ret = D('User')->getOneUser($get);
+        $this->ajaxReturn(retMessage('', $ret), 'JSON');
+    }
+
     public function editUserData()
     {
         $post = I("post.");

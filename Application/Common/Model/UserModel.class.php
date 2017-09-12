@@ -55,7 +55,7 @@ class UserModel extends Model
     public function getOneUser($nick)
     {
         $where['username'] = $nick['username'];
-        if(empty($this->field('username,user_nick,head_img,create_time,last_login_time,last_login_ip,login_times,email,is_admin,is_seal')->where($where)->find())){
+        if(empty($this->field('username,user_nick,head_img,create_time,last_login_time,last_login_ip,login_times,email,is_admin,is_seal,cid')->where($where)->find())){
             return retErrorMessage('没有此用户');
         }
         return $this->where($where)->find();
@@ -63,7 +63,7 @@ class UserModel extends Model
 
     public function getUserList($page = '1', $row = '20')
     {
-        return $this->field('username,user_nick,head_img,create_time,last_login_time,last_login_ip,login_times,email,is_admin,is_seal')->page($page . ',' . $row)->select();
+        return $this->field('username,user_nick,head_img,create_time,last_login_time,last_login_ip,login_times,email,is_admin,is_seal,cid')->page($page . ',' . $row)->select();
     }
 
     public function addModerator($post)

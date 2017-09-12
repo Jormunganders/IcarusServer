@@ -275,6 +275,10 @@
             * passwd
             * repasswd
 
+    * 获取某个用户信息
+        * url: Home/User/getOneUser
+        * 需要的字段
+            * username 用户id
 5. 分类的相关操作
     * 获取某个分类的信息
         * get提交
