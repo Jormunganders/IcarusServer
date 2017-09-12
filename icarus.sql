@@ -89,6 +89,7 @@ ALTER TABLE icarus_posts ADD FULLTEXT index_title(title);
 
 ALTER TABLE icarus_user ADD index index_name(username);
 alter table icarus_classification add index index_c_name(c_name);
+alter table icarus_posts add index keywords(keywords);
 
 
 

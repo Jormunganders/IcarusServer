@@ -75,6 +75,8 @@ class PostsController extends AdminController{
         $post = I('post.');
 
         $this->is_empty('keywords', $post['keywords']);
+        $this->is_empty('page', $post['page']);
+        $this->is_empty('row', $post['row']);
         $ret = D('Posts')->searchPostsByKeyWords($post);
         $this->ajaxReturn($ret, 'JSON');
     }

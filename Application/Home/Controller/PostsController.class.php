@@ -133,6 +133,8 @@ class PostsController extends UserController{
         $post['is_show'] = 1;
 
         $this->is_empty('keywords', $post['keywords']);
+        $this->is_empty('page', $post['page']);
+        $this->is_empty('row', $post['row']);
         $ret = D('Posts')->searchPostsByKeywords($post);
         $this->ajaxReturn($ret, 'JSON');
     }

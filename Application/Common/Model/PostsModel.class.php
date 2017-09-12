@@ -174,19 +174,22 @@ class PostsModel extends Model{
     }
 
     public function searchPostsByKeywords($post){
-        //TODO 没有用
-        $sql = "SELECT *, MATCH (keywords) AGAINST('开发') as keywords_score, MATCH (title) AGAINST('开发') as title_score, IF(MATCH (keywords) AGAINST('开发') > 0 AND MATCH (title) AGAINST('开发') > 0,1,0) as score1 FROM icarus_posts WHERE MATCH(title, keywords) AGAINST('开发' IN BOOLEAN MODE) AND is_delete = 0 AND is_show = 1 ORDER BY posts_id DESC, score1 DESC, keywords_score DESC, title_score DESC;
-        SELECT *, MATCH (keywords) AGAINST('php开发') as keywords_score, IF(MATCH (keywords) AGAINST('php开发') > 0,1,0) as score1 FROM icarus_posts WHERE MATCH(keywords) AGAINST('php开发' IN BOOLEAN MODE) AND is_delete = 0 AND is_show = 1 ORDER BY posts_id DESC, score1 DESC, keywords_score DESC
-                SELECT *, 
-                MATCH (keywords) AGAINST({$post['keywords']}) as keywords_score,
-                MATCH (title) AGAINST({$post['keywords']}) as title_score,
-                IF(MATCH (keywords) AGAINST({$post['keywords']}) > 0 
-                AND MATCH (title) AGAINST({$post['keywords']}) > 0) as score1 
-                FROM icarus_posts 
-                WHERE MATCH(title, keywords) AGAINST({$post['keywords']} IN BOOLEAN MODE) AND id_delete = 0 AND is_show = {$post['is_show']}
-                ORDER BY posts_id DESC, score1 DESC, keywords_score DESC, title_score DESC";
-        $ret = $this->query($sql);
-        return retMessage('', array($this->getDbError(),$ret));
+        $ret = $this->field('posts_id, title, author, keywords, add_time, click, is_featured, is_end')
+            ->where("locate('%s',keywords) and is_delete=0 and is_show=1", array($post['keywords']))
+            ->page($post['page'] . ',' . $post['row'])
+            ->order('posts_id desc')
+            ->select();
+        if(empty($ret)){
+            $ret = $this->field('posts_id, title, author, keywords, add_time, click, is_featured, is_end')
+                ->where("locate('%s', title) and is_delete=0 and is_show=1", array($post['keywords']))
+                ->page($post['page'] . ',' . $post['row'])
+                ->order('posts_id desc')
+                ->select();
+        }
+        if($ret === false){
+            return retErrorMessage('查询失败，请重试');
+        }
+        return retMessage('', $ret);
     }
 
     public function getClassificationPosts($get, $is_show = ''){

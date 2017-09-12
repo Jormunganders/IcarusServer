@@ -125,7 +125,12 @@
             * row 一页几行
             
     * 搜索帖子
-        * 还没写好 。。。
+        * post提交
+        * url: Admin/Posts/searchPostsByKeywords
+        * 需要的字段
+            * page 第几页
+            * row 一页几行
+            * keywords 要搜索的词
         
     * 获取某个分类下的帖子
         * get提交
@@ -373,7 +378,12 @@
             * row 每页行数
             
     * 搜索帖子功能
-        * 还没写好。。。
+        * post提交
+        * url: Admin/Posts/searchPostsByKeywords
+        * 需要的字段
+            * page 第几页
+            * row 一页几行
+            * keywords 要搜索的词
         
     * 获取某个分类下的帖子
         * get提交
