@@ -114,7 +114,11 @@ class UserModel extends Model
             return $ret;
         }
         $where['username'] = $post['username'];
-        if(empty($this->where($where)->find())){
+        $ret = $this->where($where)->find();
+        if($ret['is_admin'] != 3){
+            return retErrorMessage('没有权限');
+        }
+        if(empty($ret)){
             return retErrorMessage('没有此用户');
         }
         $data['is_admin'] = 2;
