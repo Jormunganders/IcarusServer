@@ -48,6 +48,9 @@ class UserController extends AdminController
     public function addAdministrator()
     {
         $post = I("post.");
+        if(session('admin_username') != 'root'){
+            $this->ajaxReturn(retErrorMessage('没有权限'), 'JSON');
+        }
         $model = D("User");
         $ret = $model->addAdministrator($post);
         $this->ajaxReturn($ret, 'JSON');

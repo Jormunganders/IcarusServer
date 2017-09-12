@@ -115,7 +115,7 @@ class UserModel extends Model
             return $ret;
         }
         $where['username'] = $post['username'];
-        $ret = $this->where($where)->find();
+
         $data['is_admin'] = 2;
         if ($this->where($where)->save($data) !== false) {
             $ret = retMessage('添加成功');
