@@ -59,6 +59,9 @@ class ClassificationController extends AdminController{
 
        $this->is_empty('cid', $get['cid']);
        $ret = D('Classification')->getTreeClassification($get['cid']);
+       if(empty($ret)){
+           $this->ajaxReturn(retMessage('没有此版块'), 'JSON');
+       }
        $this->ajaxReturn(retMessage('',$ret), 'JSON');
    }
 

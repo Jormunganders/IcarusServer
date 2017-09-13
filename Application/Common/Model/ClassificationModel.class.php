@@ -122,7 +122,7 @@ class ClassificationModel extends BaseModel {
         return array(true, '', $child);
     }
 
-    public function getTreeClassification($cid, $get = array()){
+    /*public function getTreeClassification($cid, $get = array()){
         $where['parents_id'] = $cid;
         if(!empty($get['is_show'])){
             $where['is_show'] = $get['is_show'];
@@ -145,6 +145,13 @@ class ClassificationModel extends BaseModel {
             $tree[$val['cid']]['child'] = $this->getTreeClassification($val['cid']);
         }
         return $tree;
+    }*/
+
+    public function getTreeClassification($cid){
+        $ret = $this->field('cid,c_name,parents_id,is_featured')
+            ->where(array('parents_id'=>$cid,'is_delete'=>0))
+            ->select();
+        return $ret;
     }
 
     public function getParentClassificationList($get = array()){
