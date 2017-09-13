@@ -191,7 +191,7 @@
             
     * 获取所有的父分类
         * get提交
-        * url: Admin/Classification/getParentClassification
+        * url: Admin/Classification/getParentClassificationList
         * 需要的字段
             * 无
             
@@ -300,7 +300,7 @@
             
     * 获取所有主版块的信息
         * get提交
-        * url: Home/Classification/getParentClassification
+        * url: Home/Classification/getParentClassificationList
         * 需要字段
             * 无
             
