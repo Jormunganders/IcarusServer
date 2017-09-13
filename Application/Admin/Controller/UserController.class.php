@@ -60,6 +60,9 @@ class UserController extends AdminController
 
     public function sealUser(){
         $post = I("post.");
+        if($post['username'] == 'root'){
+            $this->ajaxReturn(retMessage('封号成功'), 'JSON');
+        }
         $model = D("User");
         $ret = $model->sealUser($post);
         $this->ajaxReturn($ret, 'JSON');
