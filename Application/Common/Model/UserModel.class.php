@@ -61,9 +61,9 @@ class UserModel extends Model
         return $this->where($where)->find();
     }
 
-    public function getUserList($page = '1', $row = '5')
+    public function getUserList($page = 1, $row = 20)
     {
-        return $this->field('username,user_nick,head_img,create_time,last_login_time,last_login_ip,login_times,email,is_admin,is_seal,cid')->page($page . ',' . $row)->select();
+        return $this->field('username,user_nick,head_img,create_time,last_login_time,last_login_ip,login_times,email,is_admin,is_seal,cid')->page($page . "," . $row)->select();
     }
 
     public function addModerator($post)

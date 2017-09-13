@@ -30,8 +30,8 @@ class UserController extends AdminController
 
     public function getUserList()
     {
-        $model = D('User');
         $data = I('get.');
+        $model = D('User');
         $ret = $model->getUserlist($data['page'], $data['row']);
         $ret = retMessage('', $ret);
         $this->ajaxReturn($ret, 'JSON');
