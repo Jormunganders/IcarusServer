@@ -69,15 +69,19 @@ class UserModel extends Model
     public function addModerator($post)
     {
         $where['username'] = $post['username'];
-        if (empty($post['username'])) {
-            return retErrorMessage('用户id不能为空');
-        }
         $ret = $this->field('uid, is_admin')->where($where)->find();
         if(empty($ret) || $ret['is_admin'] == 3){
             return retErrorMessage('没有此用户');
         }
+        $ret = M('Classification')
+            ->field('cid')
+            ->where(array('c_name'=>$post['cName'], 'is_delete'=>0))
+            ->find();
+        if(empty($ret)){
+            return retErrorMessage('没有此版块');
+        }
         $data['is_admin'] = 1;
-        $data['cid'] = $post['cid'];
+        $data['cid'] = $ret['cid'];
         if ($this->where($where)->save($data) !== false) {
             $ret = retMessage('添加成功');
         } else {

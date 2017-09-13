@@ -40,6 +40,8 @@ class UserController extends AdminController
     public function addModerator()
     {
         $post = I("post.");
+        $this->is_empty('username', $post['username']);
+        $this->is_empty('cName', $post['cName']);
         $model = D('User');
         $ret = $model->addModerator($post);
         $this->ajaxReturn($ret, 'JSON');
