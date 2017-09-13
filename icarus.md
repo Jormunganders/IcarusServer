@@ -50,7 +50,7 @@
 	    * url：http://115.159.56.141/index.php/Admin/User/addModerator
 	    * 需要输入的字段
 		    * username：用户id
-		    * cid： 分类id
+		    * cName： 分类名
     * 给用户管理员权限
         * post提交
 	    * url：http://115.159.56.141/index.php/Admin/User/addAdministrator
