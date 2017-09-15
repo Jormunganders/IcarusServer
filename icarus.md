@@ -260,11 +260,11 @@
             * row 一页几行
                 
     * 获取用户自己的评论
-            * get提交
-            * url: Home/User/getUserReply
-            * 需要的字段
-                * username 用户id
-                * page 第几页
+    	* get提交
+        * url: Home/User/getUserReply
+        * 需要的字段
+       		* username 用户id
+               	* page 第几页
                 * row 一页几行
                 
     * 用户资料修改
