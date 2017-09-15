@@ -118,6 +118,11 @@ class UserModel extends Model
             $ret = retErrorMessage('请填写用户id');
             return $ret;
         }
+        if(empty($this
+            ->field('uid')
+            ->where(array('username'=>$post['username'])))){
+            return retErrorMessage('没有此用户');
+        }
         $where['username'] = $post['username'];
         $data['is_admin'] = 2;
         if ($this->where($where)->save($data) !== false) {
