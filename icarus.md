@@ -307,7 +307,7 @@
 6. 帖子操作
     * 发表帖子
         * post提交
-        * url: Home/Classification/publishPosts
+        * url: Home/Posts/publishPosts
         * 需要字段
             * username 用户id
             * cid 分类id
