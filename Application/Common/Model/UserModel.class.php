@@ -55,10 +55,11 @@ class UserModel extends Model
     public function getOneUser($nick)
     {
         $where['username'] = $nick['username'];
-        if(empty($this->field('username,user_nick,head_img,create_time,last_login_time,last_login_ip,login_times,email,is_admin,is_seal,cid')->where($where)->find())){
+        $ret = $this->field('username,user_nick,head_img,create_time,last_login_time,last_login_ip,login_times,email,is_admin,is_seal,cid')->where($where)->find();
+        if(empty($ret)){
             return retErrorMessage('没有此用户');
         }
-        return $this->where($where)->find();
+        return $ret;
     }
 
     public function getUserList($page = 1, $row = 20)
@@ -97,7 +98,8 @@ class UserModel extends Model
         if(empty($this->where($where)->find())){
             return retErrorMessage('没有此用户');
         }
-        if(!empty($this->where($wh)->find())){
+        $username = $this->field('username')->where($wh)->find();
+        if(!empty($username) && $username['username'] != $post['username']){
             $ret = retErrorMessage('邮箱已被注册');
             return $ret;
         }

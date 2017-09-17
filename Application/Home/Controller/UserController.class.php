@@ -10,6 +10,8 @@ class UserController extends Controller{
         $this->isOnePeople($get['username']);
 
         $ret = D('User')->getOneUser($get);
+        $falter = array('username'=>'','user_nick'=>'','head_img'=>'','cid'=>'');
+        $ret = array_intersect_key($ret, $falter);
         $this->ajaxReturn(retMessage('', $ret), 'JSON');
     }
 
@@ -29,7 +31,7 @@ class UserController extends Controller{
             return retErrorMessage('昵称不能为空');
         }
         $this->is_str_len_long('email', $post['email'], 255);
-        $this->is_str_len_long('nick', $post['nick'], 30, '1');
+        $this->is_str_len_long('nick', $post['nick'], 50, '1');
         $this->checkTheFormat('email', $post['email'], "%^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$%i");
 
         $model = D("User");

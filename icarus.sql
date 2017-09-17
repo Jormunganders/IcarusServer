@@ -91,6 +91,8 @@ ALTER TABLE icarus_user ADD index index_name(username);
 alter table icarus_classification add index index_c_name(c_name);
 alter table icarus_posts add index keywords(keywords);
 
+ALTER TABLE icarus_user MODIFY COLUMN user_nick VARCHAR(50);
+
 
 
 
