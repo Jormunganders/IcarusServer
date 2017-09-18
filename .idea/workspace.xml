@@ -7,7 +7,6 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/dataSources/816d28e7-266d-4f43-87f2-ddc517fba34b.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/dataSources/bbe7d089-23c4-4744-9a40-60b5ea79d40a.xml" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/dataSources/f62a6d71-2c42-4c26-860a-08181e2b8824.xml" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -80,11 +79,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="following.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="following.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../../nginx/html/following.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1079">
-              <caret line="376" column="23" lean-forward="false" selection-start-line="376" selection-start-column="23" selection-end-line="376" selection-end-column="23" />
+            <state relative-caret-position="403">
+              <caret line="350" column="42" lean-forward="true" selection-start-line="350" selection-start-column="42" selection-end-line="350" selection-end-column="42" />
               <folding />
             </state>
           </provider>
@@ -100,11 +99,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PostsController.class.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="PostsController.class.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Application/Admin/Controller/PostsController.class.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="62" column="44" lean-forward="true" selection-start-line="62" selection-start-column="44" selection-end-line="62" selection-end-column="44" />
+            <state relative-caret-position="78">
+              <caret line="60" column="22" lean-forward="false" selection-start-line="60" selection-start-column="22" selection-end-line="60" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -200,8 +199,8 @@
         <option value="$PROJECT_DIR$/Template/default/static/css/log_in_up.css" />
         <option value="$PROJECT_DIR$/../../../nginx/html/50x.html" />
         <option value="$PROJECT_DIR$/Application/Admin/Controller/UserController.class.php" />
-        <option value="$PROJECT_DIR$/Application/Admin/Controller/PostsController.class.php" />
         <option value="$PROJECT_DIR$/../../../nginx/html/following.html" />
+        <option value="$PROJECT_DIR$/Application/Admin/Controller/PostsController.class.php" />
       </list>
     </option>
   </component>
@@ -590,12 +589,12 @@
       <workItem from="1505704559259" duration="443000" />
       <workItem from="1505721264940" duration="440000" />
       <workItem from="1505722117635" duration="185000" />
-      <workItem from="1505723008399" duration="740000" />
+      <workItem from="1505723008399" duration="880000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="346800000" />
+    <option name="totallyTimeSpent" value="346940000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1001,14 +1000,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Application/Admin/Controller/PostsController.class.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="62" column="44" lean-forward="true" selection-start-line="62" selection-start-column="44" selection-end-line="62" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../../nginx/html/50x.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="469">
@@ -1019,8 +1010,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../nginx/html/following.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1079">
-          <caret line="376" column="23" lean-forward="false" selection-start-line="376" selection-start-column="23" selection-end-line="376" selection-end-column="23" />
+        <state relative-caret-position="403">
+          <caret line="350" column="42" lean-forward="true" selection-start-line="350" selection-start-column="42" selection-end-line="350" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Application/Admin/Controller/PostsController.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="78">
+          <caret line="60" column="22" lean-forward="false" selection-start-line="60" selection-start-column="22" selection-end-line="60" selection-end-column="22" />
           <folding />
         </state>
       </provider>

@@ -65,7 +65,8 @@ class PostsController extends AdminController{
         $ret = M('Posts')
             ->field('posts_id, title, author, content, keywords, add_time, click, is_end')
             ->where('is_delete=1')
-            ->order($get['page'] . ',' . $get['row'])
+            ->page($get['page'] . ',' . $get['row'])
+            ->order('posts_id desc')
             ->select();
         return retMessage('', $ret);
     }
