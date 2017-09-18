@@ -68,7 +68,7 @@ class PostsController extends AdminController{
             ->page($get['page'] . ',' . $get['row'])
             ->order('posts_id desc')
             ->select();
-        return retMessage('', $ret);
+        $this->ajaxReturn(retMessage('', $ret), 'JSON');
     }
 
     public function searchPostsByKeywords()
