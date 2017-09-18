@@ -178,7 +178,7 @@ class Verify {
         header('Cache-Control: private, max-age=0, no-store, no-cache, must-revalidate');
         header('Cache-Control: post-check=0, pre-check=0', false);		
         header('Pragma: no-cache');
-        header("content-type: image/jpeg");
+        header("content-type: images/jpeg");
 
         // 输出图像
         imagejpeg($this->_image);

@@ -19,7 +19,7 @@ class UploadController extends UserController{
         if(!$info) {
             $this->ajaxReturn(retErrorMessage($upload->getError()), 'JSON');
         }else{
-            $this->ajaxReturn(retMessage('', array('url' => 'http://localhost:8000/IcarusServer/Uploads/'.$info['image']['savepath'].$info['image']['savename'])), 'JSON');
+            $this->ajaxReturn(retMessage('', array('url' => 'http://localhost:8000/IcarusServer/Uploads/'.$info['images']['savepath'].$info['images']['savename'])), 'JSON');
         }
     }
 }

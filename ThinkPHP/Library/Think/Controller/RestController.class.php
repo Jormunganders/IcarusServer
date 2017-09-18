@@ -105,9 +105,9 @@ class RestController extends Controller {
             'atom'  =>  'application/atom+xml',
             'pdf'   =>  'application/pdf',
             'text'  =>  'text/plain',
-            'png'   =>  'image/png',
-            'jpg'   =>  'image/jpg,image/jpeg,image/pjpeg',
-            'gif'   =>  'image/gif',
+            'png'   =>  'images/png',
+            'jpg'   =>  'images/jpg,images/jpeg,images/pjpeg',
+            'gif'   =>  'images/gif',
             'csv'   =>  'text/csv',
             'html'  =>  'text/html,application/xhtml+xml,*/*'
         );

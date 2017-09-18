@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,5 +14,57 @@
     确认密码:<input type="password" name="repasswd" /><br/>
     <input type="submit" name="提交" />
 </form>
+</body>
+</html>-->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>修改密码</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/log_in_up.css" />
+    <script type="text/javascript" src="../../static/js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" async="async">
+        $(document).ready(function () {
+            function form() {
+                var oform = document.getElementById('login');
+                var L1 = oform.offsetWidth;
+                var H1 = oform.offsetHeight;
+                var Left = (document.documentElement.clientWidth - L1) / 2;
+                var top = (document.documentElement.clientHeight - H1) / 2;
+                oform.style.left = Left + 'px';
+                oform.style.top = top + 'px';
+            }
+            form();
+            window.onresize = function () {
+                form();
+            };
+        });
+    </script>
+</head>
+<body>
+<div id="con">
+    <form  id="login" action="{:U('Home/User/modifyPasswd')}" method="post">
+        <h1>修改密码</h1>
+        <fieldset>
+            <input type="hidden" name="username" value="{$username}"  disabled/>
+            <input type="hidden" name="token" value="{$token}"  disabled/>
+            <input type="hidden" name="user_token" value="{$user_token}"  disabled/>
+            <input id="username" class="input" type="password" name="old_passwd" placeholder="旧密码" autofocus
+                   required/>
+            <input id="password" class="input" type="password" name="passwd" placeholder="新密码"
+                   required/>
+            <input id="repassword" class="input" type="password" name="repasswd" placeholder="确认密码"
+                              required/>
+        </fieldset>
+        <div style="text-align: center">
+            <div style="width: 50%;padding: 0;margin: 0; float: left;box-sizing: border-box;">
+                <button class="submit" type="submit" id="submit" value="Signin">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
 </body>
 </html>
