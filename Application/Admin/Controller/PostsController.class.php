@@ -58,7 +58,7 @@ class PostsController extends AdminController{
     }
 
     public function getDeletePosts(){
-        $get = I('get');
+        $get = I('get.');
         $this->is_empty('page', $get['page']);
         $this->is_empty('row', $get['row']);
 
