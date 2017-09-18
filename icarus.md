@@ -379,7 +379,7 @@
             
     * 搜索帖子功能
         * post提交
-        * url: Admin/Posts/searchPostsByKeywords
+        * url: Home/Posts/searchPostsByKeywords
         * 需要的字段
             * page 第几页
             * row 一页几行
@@ -396,7 +396,7 @@
     * 获取某个帖子信息
         * get提交
         * url: Home/Posts/getOnePosts
-        *需要的字段
+        * 需要的字段
             * postsId 帖子id
             
     * 获取某种帖子的总数
