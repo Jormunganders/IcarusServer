@@ -119,9 +119,9 @@ class PostsController extends AdminController{
 
     private function cutStr(&$ret){
         if(isset($ret)){
-            foreach ($ret as $val){
+            foreach ($ret as $key => $val){
                 if(strlen($val['content']) > 100){
-                    $val['content'] = substr($val['content'], 0, 100) . '...';
+                    $ret[$key]['content'] = substr($val['content'], 0, 100) . '...';
                 }
             }
         }
