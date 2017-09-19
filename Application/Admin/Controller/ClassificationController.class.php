@@ -51,7 +51,7 @@ class ClassificationController extends AdminController{
        if($ret[0] === false){
            $this->ajaxReturn(retErrorMessage($ret[1]), 'JSON');
        }
-       $this->ajaxReturn(retMessage($ret[1], $ret[3]), 'JSON');
+       $this->ajaxReturn(retMessage($ret[1], $ret[2]), 'JSON');
    }
 
    public function getTreeClassification(){
