@@ -108,7 +108,7 @@ class UserController extends AdminController
     public function getSealUserList(){
         $ret = M('User')
             ->field('username, last_login_time, last_login_ip, login_times, email, is_admin, cid')
-            ->where(array('is_seal' => 1))
+            ->where('is_seal=1')
             ->select();
         $this->ajaxReturn(retMessage('', $ret), 'JSON');
     }

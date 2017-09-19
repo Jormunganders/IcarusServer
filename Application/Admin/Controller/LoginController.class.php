@@ -22,6 +22,10 @@ class LoginController extends PubController
                 $ret = retMessage('没有此用户', array($model->getDbError()));
                 $this->ajaxReturn($ret, 'JSON');
             }
+            $is_seal = $model->field('uid')->where(array('is_seal'=>0, 'username'=>$post['username']))->find();
+            if(!isset($is_seal)){
+                $this->ajaxReturn(retErrorMessage('您已被封号，请联系管理员解封'), 'JSON');
+            }
             if ($data['is_admin'] == '2' || $data['is_admin'] == '3') {
                 if ($data['passwd'] == md5($post['passwd'] . $data['salt'])) {
                     $insert['last_login_time'] = time();
