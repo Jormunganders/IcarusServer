@@ -121,7 +121,7 @@ class PostsController extends AdminController{
         if(isset($ret)){
             foreach ($ret as $val){
                 if(strlen($val['content']) > 100){
-                    $ret['content'] = substr($ret['content'], 0, 100) . '...';
+                    $val['content'] = substr($val['content'], 0, 100) . '...';
                 }
             }
         }
