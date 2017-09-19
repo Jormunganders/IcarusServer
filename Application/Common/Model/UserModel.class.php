@@ -120,9 +120,7 @@ class UserModel extends Model
             $ret = retErrorMessage('请填写用户id');
             return $ret;
         }
-        if(empty($this
-            ->field('uid')
-            ->where(array('username'=>$post['username'])))){
+        if(empty($this->field('uid')->where(array('username'=>$post['username']))->find())){
             return retErrorMessage('没有此用户');
         }
         $where['username'] = $post['username'];
