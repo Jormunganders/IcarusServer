@@ -1,5 +1,5 @@
 <?php
-ob_start();
+/*ob_start();
 $header = "Access-Control-Allow-Origin: ".$_SERVER['HTTP_ORIGIN'];
 ob_clean();
 header('Access-Control-Allow-Credentials:true');
@@ -59,4 +59,4 @@ function avg($s){
     $avg = $avg/count($sum);
     echo $avg;
 }
-var_dump($_REQUEST);
+var_dump($_REQUEST);*/

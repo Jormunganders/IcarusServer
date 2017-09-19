@@ -107,6 +107,7 @@ class PostsController extends UserController{
         $this->is_empty('page', $get['page']);
         $this->is_empty('row', $get['row']);
         $ret = D('Posts')->getTopPostsList($get['page'], $get['row'], '1');
+        $this->cutStr($ret);
         $this->ajaxReturn($ret, 'JSON');
     }
 
@@ -116,6 +117,7 @@ class PostsController extends UserController{
         $this->is_empty('page', $get['page']);
         $this->is_empty('row', $get['row']);
         $ret = D('Posts')->getRecommendPostsList($get['page'], $get['row'], '1');
+        $this->cutStr($ret);
         $this->ajaxReturn($ret, 'JSON');
     }
 
@@ -125,6 +127,7 @@ class PostsController extends UserController{
         $this->is_empty('page', $get['page']);
         $this->is_empty('row', $get['row']);
         $ret = D('Posts')->getPostslist($get['page'], $get['row'], '1');
+        $this->cutStr($ret);
         $this->ajaxReturn($ret, 'JSON');
     }
 
@@ -136,6 +139,7 @@ class PostsController extends UserController{
         $this->is_empty('page', $post['page']);
         $this->is_empty('row', $post['row']);
         $ret = D('Posts')->searchPostsByKeywords($post);
+        $this->cutStr($ret);
         $this->ajaxReturn($ret, 'JSON');
     }
 
@@ -146,6 +150,7 @@ class PostsController extends UserController{
         $this->is_empty('row', $get['row']);
         $this->is_empty('cid', $get['cid']);
         $ret = D('Posts')->getClassificationPosts($get, '1');
+        $this->cutStr($ret);
         $this->ajaxReturn($ret, 'JSON');
     }
 
@@ -172,5 +177,15 @@ class PostsController extends UserController{
 
         $ret = D('Posts')->getPostsCount($get['action'], '1');
         $this->ajaxReturn(retMessage('', array('count'=>$ret[2])), 'JSON');
+    }
+
+    private function cutStr(&$ret){
+        if(isset($ret)){
+            foreach ($ret as $val){
+                if(strlen($val['content']) > 100){
+                    $ret['content'] = substr($ret['content'], 0, 100) . '...';
+                }
+            }
+        }
     }
 }

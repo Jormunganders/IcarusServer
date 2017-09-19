@@ -36,6 +36,7 @@ class PostsController extends AdminController{
         $this->is_empty('page', $get['page']);
         $this->is_empty('row', $get['row']);
         $ret = D('Posts')->getTopPostsList($get['page'], $get['row']);
+        $this->cutStr($ret);
         $this->ajaxReturn($ret, 'JSON');
     }
 
@@ -45,6 +46,7 @@ class PostsController extends AdminController{
         $this->is_empty('page', $get['page']);
         $this->is_empty('row', $get['row']);
         $ret = D('Posts')->getRecommendPostsList($get['page'], $get['row']);
+        $this->cutStr($ret);
         $this->ajaxReturn($ret, 'JSON');
     }
 
@@ -54,6 +56,7 @@ class PostsController extends AdminController{
         $this->is_empty('page', $get['page']);
         $this->is_empty('row', $get['row']);
         $ret = D('Posts')->getPostsList($get['page'], $get['row']);
+        $this->cutStr($ret);
         $this->ajaxReturn($ret, 'JSON');
     }
 
@@ -68,6 +71,7 @@ class PostsController extends AdminController{
             ->page($get['page'] . ',' . $get['row'])
             ->order('posts_id desc')
             ->select();
+        $this->cutStr($ret);
         $this->ajaxReturn(retMessage('', $ret), 'JSON');
     }
 
@@ -79,6 +83,7 @@ class PostsController extends AdminController{
         $this->is_empty('page', $post['page']);
         $this->is_empty('row', $post['row']);
         $ret = D('Posts')->searchPostsByKeyWords($post);
+        $this->cutStr($ret);
         $this->ajaxReturn($ret, 'JSON');
     }
 
@@ -89,6 +94,7 @@ class PostsController extends AdminController{
         $this->is_empty('row', $get['row']);
         $this->is_empty('cid', $get['cid']);
         $ret = D('Posts')->getClassificationPosts($get);
+        $this->cutStr($ret);
         $this->ajaxReturn($ret, 'JSON');
     }
 
@@ -109,5 +115,15 @@ class PostsController extends AdminController{
 
         $ret = D('Posts')->getPostsCount($get['action']);
         $this->ajaxReturn(retMessage('', array('count'=>$ret[2])), 'JSON');
+    }
+
+    private function cutStr(&$ret){
+        if(isset($ret)){
+            foreach ($ret as $val){
+                if(strlen($val['content']) > 100){
+                    $ret['content'] = substr($ret['content'], 0, 100) . '...';
+                }
+            }
+        }
     }
 }
