@@ -36,7 +36,7 @@ class PostsController extends AdminController{
         $this->is_empty('page', $get['page']);
         $this->is_empty('row', $get['row']);
         $ret = D('Posts')->getTopPostsList($get['page'], $get['row']);
-        $this->cutStr($ret);
+        $this->cutStr($ret['data']);
         $this->ajaxReturn($ret, 'JSON');
     }
 
@@ -46,7 +46,7 @@ class PostsController extends AdminController{
         $this->is_empty('page', $get['page']);
         $this->is_empty('row', $get['row']);
         $ret = D('Posts')->getRecommendPostsList($get['page'], $get['row']);
-        $this->cutStr($ret);
+        $this->cutStr($ret['data']);
         $this->ajaxReturn($ret, 'JSON');
     }
 
@@ -56,7 +56,7 @@ class PostsController extends AdminController{
         $this->is_empty('page', $get['page']);
         $this->is_empty('row', $get['row']);
         $ret = D('Posts')->getPostsList($get['page'], $get['row']);
-        $this->cutStr($ret);
+        $this->cutStr($ret['data']);
         $this->ajaxReturn($ret, 'JSON');
     }
 
@@ -71,7 +71,7 @@ class PostsController extends AdminController{
             ->page($get['page'] . ',' . $get['row'])
             ->order('posts_id desc')
             ->select();
-        $this->cutStr($ret);
+        $this->cutStr($ret['data']);
         $this->ajaxReturn(retMessage('', $ret), 'JSON');
     }
 
@@ -83,7 +83,7 @@ class PostsController extends AdminController{
         $this->is_empty('page', $post['page']);
         $this->is_empty('row', $post['row']);
         $ret = D('Posts')->searchPostsByKeyWords($post);
-        $this->cutStr($ret);
+        $this->cutStr($ret['data']);
         $this->ajaxReturn($ret, 'JSON');
     }
 
@@ -94,7 +94,7 @@ class PostsController extends AdminController{
         $this->is_empty('row', $get['row']);
         $this->is_empty('cid', $get['cid']);
         $ret = D('Posts')->getClassificationPosts($get);
-        $this->cutStr($ret);
+        $this->cutStr($ret['data']);
         $this->ajaxReturn($ret, 'JSON');
     }
 

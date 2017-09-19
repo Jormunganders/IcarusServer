@@ -60,3 +60,6 @@ function avg($s){
     echo $avg;
 }
 var_dump($_REQUEST);*/
+$str = '这时是一句话';
+$str = substr($str, 0, 3) . '...';
+echo $str;

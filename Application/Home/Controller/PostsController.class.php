@@ -107,7 +107,7 @@ class PostsController extends UserController{
         $this->is_empty('page', $get['page']);
         $this->is_empty('row', $get['row']);
         $ret = D('Posts')->getTopPostsList($get['page'], $get['row'], '1');
-        $this->cutStr($ret);
+        $this->cutStr($ret['data']);
         $this->ajaxReturn($ret, 'JSON');
     }
 
@@ -117,7 +117,7 @@ class PostsController extends UserController{
         $this->is_empty('page', $get['page']);
         $this->is_empty('row', $get['row']);
         $ret = D('Posts')->getRecommendPostsList($get['page'], $get['row'], '1');
-        $this->cutStr($ret);
+        $this->cutStr($ret['data']);
         $this->ajaxReturn($ret, 'JSON');
     }
 
@@ -127,7 +127,7 @@ class PostsController extends UserController{
         $this->is_empty('page', $get['page']);
         $this->is_empty('row', $get['row']);
         $ret = D('Posts')->getPostslist($get['page'], $get['row'], '1');
-        $this->cutStr($ret);
+        $this->cutStr($ret['data']);
         $this->ajaxReturn($ret, 'JSON');
     }
 
@@ -139,7 +139,7 @@ class PostsController extends UserController{
         $this->is_empty('page', $post['page']);
         $this->is_empty('row', $post['row']);
         $ret = D('Posts')->searchPostsByKeywords($post);
-        $this->cutStr($ret);
+        $this->cutStr($ret['data']);
         $this->ajaxReturn($ret, 'JSON');
     }
 
@@ -150,7 +150,7 @@ class PostsController extends UserController{
         $this->is_empty('row', $get['row']);
         $this->is_empty('cid', $get['cid']);
         $ret = D('Posts')->getClassificationPosts($get, '1');
-        $this->cutStr($ret);
+        $this->cutStr($ret['data']);
         $this->ajaxReturn($ret, 'JSON');
     }
 
@@ -181,9 +181,9 @@ class PostsController extends UserController{
 
     private function cutStr(&$ret){
         if(isset($ret)){
-            foreach ($ret as $val){
+            foreach ($ret as $key => $val){
                 if(strlen($val['content']) > 100){
-                    $val['content'] = substr($val['content'], 0, 100) . '...';
+                    $ret[$key]['content'] = substr($val['content'], 0, 100) . '...';
                 }
             }
         }
