@@ -488,3 +488,10 @@
         * url: Admin/User/getReportReply
         * 需要的字段
             * 无
+
+# 上传
+1. 上传功能
+    * post提交
+    * url: Home/Upload/uploadImage
+    * 需要字段
+        * 无
