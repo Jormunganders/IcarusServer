@@ -5,7 +5,7 @@ USE icarus;
 CREATE TABLE `icarus_user`(
   uid INT (10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '主键',
   username VARCHAR (20) NOT NULL DEFAULT '' COMMENT '用户id',
-  user_nick VARCHAR (30) NOT NULL DEFAULT '' COMMENT '用户昵称',
+  user_nick VARCHAR (50) NOT NULL DEFAULT '' COMMENT '用户昵称',
   passwd VARCHAR (255) NOT NULL DEFAULT '' COMMENT '密码',
   head_img VARCHAR (255) NOT NULL DEFAULT '' COMMENT '用户头像地址',
   create_time INT (10) unsigned NOT NULL DEFAULT '0' COMMENT '用户注册时间',
@@ -50,12 +50,6 @@ CREATE TABLE icarus_posts_classification(
   cid INT (10) unsigned NOT NULL DEFAULT '0' COMMENT '分类id'
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE icarus_posts_image(
-  p_iid INT (10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '主键',
-  posts_id INT (10) unsigned NOT NULL DEFAULT '0' COMMENT '帖子id',
-  path VARCHAR (255) NOT NULL DEFAULT '' COMMENT '图片地址'
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE icarus_reply(
   rid INT (10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '主键',
   uid INT (10) unsigned NOT NULL DEFAULT '0' COMMENT '回复的人的id',
@@ -68,12 +62,6 @@ CREATE TABLE icarus_reply(
   approve_amount SMALLINT(5) unsigned NOT NULL DEFAULT '0' COMMENT '点赞的数量'
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE icarus_reply_image(
-  r_iid INT(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '主键',
-  rid INT(10) unsigned NOT NULL DEFAULT '0' COMMENT '回复的id',
-  path VARCHAR (255) NOT NULL DEFAULT '' COMMENT '回复里图片的路径'
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE icarus_report(
   posts_id INT(10) unsigned NOT NULL DEFAULT '0' COMMENT '帖子id',
   rid INT(10) unsigned NOT NULL DEFAULT '0' COMMENT '评论id',
@@ -82,28 +70,6 @@ CREATE TABLE icarus_report(
 
 ALTER TABLE icarus_posts ADD INDEX index_uid (uid);
 ALTER TABLE icarus_posts_classification ADD INDEX index_p_c_id(posts_id, cid);
-ALTER TABLE icarus_posts_image ADD INDEX index_posts_id(posts_id);
-ALTER TABLE icarus_reply_image ADD INDEX index_rid(rid);
-ALTER TABLE icarus_posts ADD FULLTEXT index_keywords(keywords);
-ALTER TABLE icarus_posts ADD FULLTEXT index_title(title);
-
 ALTER TABLE icarus_user ADD index index_name(username);
 alter table icarus_classification add index index_c_name(c_name);
 alter table icarus_posts add index keywords(keywords);
-
-ALTER TABLE icarus_user MODIFY COLUMN user_nick VARCHAR(50);
-
-
-
-
-CREATE TABLE icarus_user_posts_status(
-  uid INT (10) unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
-  posts_id int(10) unsigned NOT NULL DEFAULT '0' COMMENT '帖子id',
-  is_collection tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否收藏帖子'
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE icarus_user_following(
-  uid INT (10) unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
-  following_id INT (10) unsigned NOT NULL DEFAULT '0' COMMENT '本用户关注了的人的id'
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
